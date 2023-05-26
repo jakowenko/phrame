@@ -1,0 +1,45 @@
+// Mobile-first responsive breakpoints
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1600px,
+) !default;
+
+@mixin bp-sm-phone-landscape {
+  @media (min-width: map-get($breakpoints, 'sm')) {
+    @content;
+  }
+}
+
+@mixin bp-md-tablet {
+  @media (min-width: map-get($breakpoints, 'md')) {
+    @content;
+  }
+}
+
+@mixin bp-lg-laptop {
+  @media (min-width: map-get($breakpoints, 'lg')) {
+    @content;
+  }
+}
+
+@mixin bp-xl-desktop {
+  @media (min-width: map-get($breakpoints, 'xl')) {
+    @content;
+  }
+}
+
+@mixin bp-xxl-desktop-large {
+  @media (min-width: map-get($breakpoints, 'xxl')) {
+    @content;
+  }
+}
+
+// Custom sizes
+@mixin bp-custom-min($min-width) {
+  @media (min-width: ($min-width * 1px)) {
+    @content;
+  }
+}

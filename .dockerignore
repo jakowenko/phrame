@@ -1,0 +1,6 @@
+*
+
+!package.json
+!.build/entrypoint.sh
+!frontend/*
+!api/*

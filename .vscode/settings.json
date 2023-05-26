@@ -1,0 +1,11 @@
+{
+  "eslint.workingDirectories": [
+    { "mode": "auto" }
+  ],
+  "cSpell.words": [
+    "phrame",
+    "openai",
+    "stabilityai",
+    "customizer"
+  ]
+}

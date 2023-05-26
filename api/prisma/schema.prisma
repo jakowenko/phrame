@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../../.storage/db.db"
+}
+
+model Transcript {
+  id         Int      @id @default(autoincrement())
+  transcript String
+  createdAt  DateTime @default(now())
+}
+
+model Summary {
+  id        Int      @id @default(autoincrement())
+  summary   String
+  createdAt DateTime @default(now())
+  image     Image[]
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  summary   Summary  @relation(fields: [summaryId], references: [id])
+  summaryId Int
+  filename  String
+  favorite  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  meta      Meta[]
+}
+
+model Meta {
+  id        Int      @id @default(autoincrement())
+  image     Image    @relation(fields: [imageId], references: [id])
+  imageId   Int
+  key       String
+  value     String
+  createdAt DateTime @default(now())
+}

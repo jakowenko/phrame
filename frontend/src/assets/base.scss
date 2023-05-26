@@ -1,0 +1,21 @@
+@import './fonts/fonts.css';
+
+*,
+*::before,
+*::after {
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+
+}
+
+body {
+  font-family: Roboto, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+strong { font-weight: 600; }

@@ -1,0 +1,28 @@
+{
+  "recommendations": [
+    // Language Support plugin built specifically for Vue 3
+    // https://github.com/johnsoncodehk/volar
+    "Vue.volar",
+    "Vue.vscode-typescript-vue-plugin",
+
+    // Lint-on-save with ESLint
+    // https://github.com/microsoft/vscode-eslint
+    "dbaeumer.vscode-eslint",
+
+    // Lint-on-save with Stylelint
+    // https://github.com/stylelint/vscode-stylelint
+    "stylelint.vscode-stylelint",
+
+    // Format-on-save with Prettier
+    // https://github.com/prettier/prettier-vscode
+    "esbenp.prettier-vscode",
+
+    // SCSS intellisense
+    // https://github.com/mrmlnc/vscode-scss
+    "mrmlnc.vscode-scss",
+
+    // Vue Code Snippets
+    // https://github.com/sdras/vue-vscode-snippets
+    "sdras.vue-vscode-snippets"
+  ]
+}

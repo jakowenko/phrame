@@ -1,0 +1,87 @@
+{
+  // ===
+  // Spacing
+  // ===
+
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.trimAutoWhitespace": true,
+  "files.trimTrailingWhitespace": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  // ===
+  // Event Triggers
+  // ===
+
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true
+  },
+  "eslint.validate": ["typescript", "typescriptreact", "javascript", "javascriptreact", "vue", "vue-html"],
+  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"],
+  "editor.tabCompletion": "onlySnippets",
+
+  // ===
+  // HTML
+  // ===
+
+  "html.format.enable": false,
+  "emmet.triggerExpansionOnTab": true,
+  "emmet.includeLanguages": {
+    "vue-html": "html"
+  },
+
+  // ===
+  // JS(ON)
+  // ===
+
+  "javascript.format.enable": false,
+  "json.format.enable": true,
+
+  // ===
+  // CSS
+  // ===
+
+  "stylelint.enable": true,
+  "css.validate": false,
+  "scss.validate": false,
+
+  // set i18n folder
+  "i18n-ally.localesPaths": "../src/lang",
+  // i18n json file style: nested | flat | auto
+  "i18n-ally.keystyle": "auto",
+  // i18n default language
+  "i18n-ally.displayLanguage": "en",
+
+  // Specifies the folder path to the typescript
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": [
+    "Axios",
+    "browserslist",
+    "commitlint",
+    "datadoghq",
+    "grimoire",
+    "huskyrc",
+    "loglevel",
+    "longform",
+    "npmrc",
+    "oidc",
+    "persistedstate",
+    "pinia",
+    "prebuild",
+    "preinit",
+    "rootdir",
+    "rushstack",
+    "stylelint",
+    "twentyfourg",
+    "unspaced",
+    "vite",
+    "vitejs",
+    "vuejs",
+    "vueuse"
+  ]
+}

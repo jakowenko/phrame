@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  phrame:
+    container_name: phrame
+    image: jakowenko/phrame
+    restart: unless-stopped
+    volumes:
+      - ./.storage:/.storage
+    ports:
+      - 3000:3000

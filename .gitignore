@@ -1,0 +1,12 @@
+.DS_Store
+node_modules
+
+# frontend
+frontend/dist
+
+# api
+.storage
+api/dist
+
+# local env files
+.env

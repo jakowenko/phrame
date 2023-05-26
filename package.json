@@ -1,0 +1,33 @@
+{
+  "name": "phrame",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "local:api": "nodemon -e yml,js,ts --watch ./.storage/config --watch ./api -q api/server.ts",
+    "local:frontend": "cd frontend && npm run serve",
+    "phrame": "npm run prod:migrate && npm run prod:generate && npm run prod:api",
+    "prod:migrate": "cd api && npx prisma migrate deploy && cd ..",
+    "prod:generate": "cd api && npx prisma generate > /dev/null && cd ..",
+    "prod:api": "nodemon -e yml,yaml --watch ./.storage/config -q api/server.js",
+    "version-bump": "npm version $VERSION --no-git-tag-version --allow-same-version && cd ./api && npm version $VERSION --no-git-tag-version --allow-same-version && cd ../frontend && npm version $VERSION --no-git-tag-version --allow-same-version",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://jakowenko@github.com/jakowenko/phrame.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jakowenko/phrame/issues"
+  },
+  "homepage": "https://github.com/jakowenko/phrame#readme",
+  "description": "",
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.3",
+    "@commitlint/config-conventional": "^17.6.3",
+    "husky": "^8.0.3"
+  }
+}
