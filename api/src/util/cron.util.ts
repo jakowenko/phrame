@@ -10,7 +10,6 @@ import prisma from '../util/prisma.util';
 import Log from '../util/logger.util';
 const { version } = require('../../package.json');
 
-const { log } = new Log('cron');
 
 const {
   TELEMETRY,
@@ -36,58 +35,64 @@ export default {
     new CronJob(`${DateTime.now().toFormat('m')} * * * *`, track).start();
   },
   transcript: async () => {
-    new CronJob(CRON, async () => {
-      const { cron } = state.get();
-      if (!cron) {
-        log.verbose('paused');
-        return;
-      }
+    const { log } = new Log('cron');
+    try {
+      new CronJob(CRON, async () => {
+        const { cron } = state.get();
+        if (!cron) {
+          log.verbose('paused');
+          return;
+        }
 
-      const recent = await prisma.image.findFirst({
-        where: {
-          createdAt: {
-            gt: new Date(Date.now() - 5 * 60 * 1000),
-          },
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-      });
-
-      if (recent) {
-        log.verbose('skipped (image created within last 5 minutes)');
-        return;
-      }
-
-      await prisma.transcript.deleteMany({
-        where: {
-          createdAt: {
-            lt: new Date(Date.now() - MINUTES * 60 * 1000),
-          },
-        },
-      });
-
-      const transcriptIds = (
-        await prisma.transcript.findMany({
-          select: {
-            id: true,
-          },
+        const recent = await prisma.image.findFirst({
           where: {
             createdAt: {
-              gte: new Date(Date.now() - MINUTES * 60 * 1000),
+              gte: new Date(Date.now() - 5 * 60 * 1000),
             },
           },
-        })
-      ).map(({ id }: { id: number }) => id);
+          orderBy: {
+            createdAt: 'desc',
+          },
+        });
 
-      if (transcriptIds.length < MINIMUM) {
-        log.info(
-          `${MINIMUM} transcript(s) needed within last ${MINUTES} minutes, found ${transcriptIds.length}`
-        );
-        return;
-      }
+        if (recent) {
+          log.verbose('skipped (image created within last 5 minutes)');
+          return;
+        }
 
-      emitter.emit('transcript.process', transcriptIds);
-    }).start();
+        await prisma.transcript.deleteMany({
+          where: {
+            createdAt: {
+              lt: new Date(Date.now() - MINUTES * 60 * 1000),
+            },
+          },
+        });
+
+        const transcriptIds = (
+          await prisma.transcript.findMany({
+            select: {
+              id: true,
+            },
+            where: {
+              createdAt: {
+                gte: new Date(Date.now() - MINUTES * 60 * 1000),
+              },
+            },
+          })
+        ).map(({ id }: { id: number }) => id);
+
+        if (transcriptIds.length < MINIMUM) {
+          log.info(
+            `${MINIMUM} transcript(s) needed within last ${MINUTES} minutes, found ${transcriptIds.length}`
+          );
+          return;
+        }
+
+        emitter.emit('transcript.process', transcriptIds);
+      }).start();
+    } catch (error: any) {
+      log.error(error.message);
+    }
+  },
   },
 };
