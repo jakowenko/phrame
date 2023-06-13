@@ -210,6 +210,11 @@ const toggleSelectAll = () => {
   updateFavoritesDefault();
 };
 
+const updateTotal = async () => {
+  const { data } = await ApiService.get('gallery');
+  total.value = data.total;
+};
+
 const favoriteSelected = async () => {
   favoritesDefault.value = !favoritesDefault.value;
   galleries.value.forEach((gallery: Gallery) => {
@@ -219,14 +224,10 @@ const favoriteSelected = async () => {
   });
   try {
     await ApiService.patch('image', { ids: selected.value.images, favorite: favoritesDefault.value });
+    await updateTotal();
   } catch (error) {
     emitter.emit('error', error);
   }
-};
-
-const updateTotal = async () => {
-  const { data } = await ApiService.get('gallery');
-  total.value = data.total;
 };
 
 const deleteSelected = async () => {
