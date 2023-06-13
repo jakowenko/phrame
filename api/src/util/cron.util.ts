@@ -8,8 +8,7 @@ import { emitter } from '../util/emitter.util';
 import state from '../util/state.util';
 import prisma from '../util/prisma.util';
 import Log from '../util/logger.util';
-const { version } = require('../../package.json');
-
+import { version } from '../../package.json';
 
 const {
   TELEMETRY,
