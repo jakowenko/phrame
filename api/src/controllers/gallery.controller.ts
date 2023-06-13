@@ -28,16 +28,6 @@ const calculateAspectRatio = async (filename: string): Promise<ImageDimensions> 
   }
 };
 
-const toTitleCase = (str: string): string => {
-  if (str === 'openai') return 'OpenAI';
-  if (str === 'stabilityai') return 'Stability AI';
-  if (str === 'deepai') return 'DeepAI';
-
-  return str.replace(/(\w)(\w*)/g, function (g0, g1, g2) {
-    return g1.toUpperCase() + g2.toLowerCase();
-  });
-};
-
 router.get('/filters', async (req, res) => {
   const data = await req.prisma.meta.groupBy({
     by: ['key', 'value'],
@@ -54,7 +44,7 @@ router.get('/filters', async (req, res) => {
 
   for (const key in filters) {
     let unique = [...new Set(filters[key].map((item) => item.value))];
-    filters[key] = unique.map((item) => ({ name: toTitleCase(item), value: item }));
+    filters[key] = unique.map((item) => ({ name: item, value: item }));
   }
 
   res.send(filters);
