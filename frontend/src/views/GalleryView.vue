@@ -49,6 +49,7 @@ const aspectRatio = ref({
   image: 0,
   window: 0,
 });
+let newImagePromise: Promise<[void, void, void]>;
 const modal = ref<{ show: boolean; src: string; image: { [name: string]: any }; summary: string }>({
   show: false,
   src: '',
@@ -418,9 +419,8 @@ onBeforeMount(() => {
     if (to !== 'gallery' && !to.includes('gallery')) return;
     const { action, summaryId } = obj;
     if (action === 'new-image') {
-      await getFilters();
-      await updateTotal();
-      await getGalleryById(summaryId);
+      await newImagePromise;
+      newImagePromise = Promise.all([getFilters(), updateTotal(), getGalleryById(summaryId)]);
     }
   });
   window.addEventListener('scroll', handleScroll);
