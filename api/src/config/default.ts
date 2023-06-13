@@ -48,4 +48,13 @@ export default {
       style: ['text2img'],
     },
   },
+  dream: {
+    image: {
+      enable: true,
+      timeout: 30,
+      width: 512,
+      height: 512,
+      style: ['buliojourney v2'],
+    },
+  },
 };

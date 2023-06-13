@@ -39,6 +39,7 @@ If you would like to make a donation to support development, please use [GitHub 
 
 - [OpenAI](https://openai.com)
 - [Stability AI](https://stability.ai)
+- [Dream](https://dream.ai)
 - [DeepAI](https://deepai.org)
 
 ## Voice Commands
@@ -284,6 +285,32 @@ deepai:
     style:
       - text2img
 ```
+
+### `dream`
+
+To configure Dream, obtain an [API key](https://api.dream.ai) and add it to your config like the following. All other default settings found bellow will also be applied. You can overwrite the settings by updating your `config.yml` file.
+
+```yaml
+# dream settings (default: shown below)
+
+dream:
+  # api key
+  key:
+
+  image:
+    # enable or disable image generation
+    enable: true
+    # number of seconds before the request times out and is aborted
+    timeout: 30
+    # width of the image in pixels
+    width: 512
+    # height of the image in pixels
+    height: 512
+    # image model style (https://api.luan.tools/api/styles)
+    style:
+      - buliojourney v2
+```
+
 ### `time`
 
 ```yaml
