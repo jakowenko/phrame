@@ -59,6 +59,12 @@ const schema = z.object({
     }),
     image: z.union([
       z.object({
+  autogen: z.object({
+    enable: z.boolean(),
+    cron: z.string(),
+    prompt: z.string(),
+    keywords: z.array(z.string()),
+  }),
         size: z.enum(['1024x1024', '512x512', '256x256']),
         style: z.array(z.string()).min(1),
       }),
