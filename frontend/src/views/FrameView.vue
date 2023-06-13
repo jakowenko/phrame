@@ -308,8 +308,10 @@ watch(
   (value, oldValue) => {
     if (_.isEqual(value, oldValue)) return;
     imageTimeout.value = value;
-    animateProgressBar();
-    changeImageTimeout();
+    if (!loading.value) {
+      changeImageTimeout();
+      animateProgressBar();
+    }
   },
 );
 </script>
