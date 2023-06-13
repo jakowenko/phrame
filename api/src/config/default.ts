@@ -63,4 +63,12 @@ export default {
       style: ['buliojourney v2'],
     },
   },
+  midjourney: {
+    image: {
+      enable: true,
+      parameters: '--chaos 80 --no text',
+      upscale: 'random',
+      style: ['cinematic'],
+    },
+  },
 };
