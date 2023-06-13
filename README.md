@@ -39,6 +39,7 @@ If you would like to make a donation to support development, please use [GitHub 
 
 - [OpenAI](https://openai.com)
 - [Stability AI](https://stability.ai)
+- [DeepAI](https://deepai.org)
 
 ## Voice Commands
 
@@ -255,6 +256,34 @@ stabilityai:
       - cinematic
 ```
 
+### `deepai`
+
+To configure DeepAI, obtain an [API key](https://deepai.org) and add it to your config like the following. All other default settings found bellow will also be applied. You can overwrite the settings by updating your `config.yml` file.
+
+```yaml
+# deepai settings (default: shown below)
+
+deepai:
+  # api key
+  key:
+
+  image:
+    # enable or disable image generation
+    enable: true
+    # number of seconds before the request times out and is aborted
+    timeout: 30
+    # 1 returns one image and 2 returns four images
+    grid_size: 1
+    # width of the image in pixels, between 128 and 1536
+    width: 512
+    # height of the image in pixels, between 128 and 1536
+    height: 512
+    # indicate what you want to be removed from the image
+    negative_prompt:
+    # image model style (https://deepai.org/machine-learning-model/text2img)
+    style:
+      - text2img
+```
 ### `time`
 
 ```yaml

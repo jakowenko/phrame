@@ -109,6 +109,20 @@ const schema = z.object({
           .refine(
             validateSizeFor768,
             'Size must be between 589,824 (768x768) and 1,048,576 (1024x1024) for engine_id containing 768'
+  deepai: z
+    .object({
+      key: z.string(),
+      image: z.object({
+        enable: z.boolean(),
+        timeout: z.number(),
+        grid_size: z.number().min(1).max(2),
+        width: z.number().min(128).max(1536),
+        height: z.number().min(128).max(1536),
+        style: z.array(z.string()).min(1),
+        negative_prompt: z.string().nullish(),
+      }),
+    })
+    .nullish(),
           )
           .refine(
             validateSizeForOtherEngines,
