@@ -256,6 +256,17 @@ const schema = z.object({
       }),
     })
     .nullish(),
+  midjourney: z
+    .object({
+      server_id: z.string(),
+      channel_id: z.string(),
+      token: z.string(),
+      hugging_face_token: z.string().nullish(),
+      image: z.object({
+        enable: z.boolean(),
+        parameters: z.string(),
+        upscale: z.union([z.literal(false), z.literal('random'), z.number().min(1).max(4)]),
+      }),
     })
     .nullish(),
   system: z.object({

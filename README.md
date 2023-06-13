@@ -38,9 +38,12 @@ If you would like to make a donation to support development, please use [GitHub 
 ## Supported AIs
 
 - [OpenAI](https://openai.com)
+- [Midjourney](https://midjourney.com)\*
 - [Stability AI](https://stability.ai)
 - [Dream](https://dream.ai)
 - [DeepAI](https://deepai.org)
+
+\* _Midjourney currently uses an unofficial third party [package](https://github.com/erictik/midjourney-client). Use this integration at your own risk._
 
 ## Voice Commands
 
@@ -236,6 +239,44 @@ openai:
     size: 512x512
     # number of images to generate for each style
     n: 1
+    # used with summary to guide the image model towards a particular style
+    style:
+      - cinematic
+```
+
+### `midjourney`
+
+_Midjourney currently uses an unofficial third party [package](https://github.com/erictik/midjourney-client). Use this integration at your own risk._
+
+To configure Midjourney, you will need the following:
+
+- [Discord Server](https://support.discord.com/hc/en-us/articles/204849977-How-do-I-create-a-server) ID and Channel ID
+  - Obtain by going to your Discord channel in a browser which should follow this pattern - `https://discord.com/channels/SERVER_ID/CHANNEL_ID`
+- Invite [Midjourney bot](https://docs.midjourney.com/docs/invite-the-bot) to your server
+- While not necessary, it is also recommended to use a [Hugging Face token](https://huggingface.co/docs/hub/security-tokens) for security prompts
+
+All other default settings found bellow will also be applied. You can overwrite the settings by updating your `config.yml` file.
+
+```yaml
+# midjourney settings (default: shown below)
+
+midjourney:
+  # discord server id
+  server_id:
+  # discord channel id
+  channel_id:
+  # discord token (https://linuxhint.com/get-discord-token)
+  token:
+  # hugging face token (https://huggingface.co/docs/hub/security-tokens)
+  hugging_face_token:
+
+  image:
+    # enable or disable image generation
+    enable: true
+    # options added to a prompt that change how an image generates (https://docs.midjourney.com/docs/parameter-list)
+    parameters: --chaos 80 --no text
+    # upscale options (false, random, 1,2,3,4)
+    upscale: random
     # used with summary to guide the image model towards a particular style
     style:
       - cinematic
