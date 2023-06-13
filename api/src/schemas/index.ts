@@ -50,27 +50,28 @@ const schema = z.object({
     minutes: z.number(),
     minimum: z.number().min(1),
   }),
-  openai: z.object({
-    key: z.string(),
-    summary: z.object({
-      model: z.string(),
-      prompt: z.string(),
-      random: z.string(),
-    }),
-    image: z.union([
-      z.object({
   autogen: z.object({
     enable: z.boolean(),
     cron: z.string(),
     prompt: z.string(),
     keywords: z.array(z.string()),
   }),
+  openai: z
+    .object({
+      key: z.string(),
+      summary: z.object({
+        model: z.string(),
+        prompt: z.string(),
+        random: z.string(),
+      }),
+      image: z.object({
+        enable: z.boolean(),
         size: z.enum(['1024x1024', '512x512', '256x256']),
         style: z.array(z.string()).min(1),
+        n: z.number().min(1).max(10),
       }),
-      z.literal(false),
-    ]),
-  }),
+    })
+    .nullish(),
   stabilityai: z
     .object({
       key: z.string(),
