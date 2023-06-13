@@ -181,10 +181,11 @@ const handleScroll = async () => {
 };
 
 const allSelected = () =>
+  selected.value.images.length > 0 &&
   selected.value.images.length ===
-  galleries.value.reduce((prev: number, curr: Gallery) => {
-    return prev + curr.image.length;
-  }, 0);
+    galleries.value.reduce((prev: number, curr: Gallery) => {
+      return prev + curr.image.length;
+    }, 0);
 
 const updateFavoritesDefault = () => {
   const allFavorites =
