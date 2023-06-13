@@ -37,4 +37,15 @@ export default {
       style: ['cinematic'],
     },
   },
+  deepai: {
+    image: {
+      enable: true,
+      timeout: 30,
+      grid_size: 1,
+      width: 512,
+      height: 512,
+      negative_prompt: null,
+      style: ['text2img'],
+    },
+  },
 };

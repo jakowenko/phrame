@@ -17,6 +17,7 @@ type GroupedImages = {
 const toTitleCase = (str: string): string => {
   if (str === 'openai') return 'OpenAI';
   if (str === 'stabilityai') return 'Stability AI';
+  if (str === 'deepai') return 'DeepAI';
 
   return str.replace(/(\w)(\w*)/g, function (g0, g1, g2) {
     return g1.toUpperCase() + g2.toLowerCase();
