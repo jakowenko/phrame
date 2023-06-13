@@ -2,7 +2,10 @@ import fs from 'fs';
 import express from 'express';
 
 import config from '../config';
+import Log from '../util/logger.util';
 import socket from '../util/socket.util';
+
+const { log } = new Log('image');
 
 const router = express.Router();
 const {
@@ -107,9 +110,13 @@ router.delete('/', async (req, res) => {
   await req.prisma.image.deleteMany({
     where: { id: { in: ids } },
   });
-  images.forEach(({ filename }: { filename: string }) =>
-    fs.unlinkSync(`${STORAGE.IMAGE.PATH}/${filename}`)
-  );
+  images.forEach(({ filename }: { filename: string }) => {
+    try {
+      fs.unlinkSync(`${STORAGE.IMAGE.PATH}/${filename}`);
+    } catch (error: any) {
+      log.error(error.message);
+    }
+  });
   socket.emit('to', { to: 'frame', reloadImages: true });
   res.send('OK');
 });
