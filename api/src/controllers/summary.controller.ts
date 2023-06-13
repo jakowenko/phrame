@@ -17,7 +17,7 @@ router.get('/random', async (req, res) => {
     return res.status(BAD_REQUEST).send({ error: 'Open AI not configured' });
 
   const openai = (await import('../ai/openai')).default;
-  const summary = await new openai().random();
+  const summary = await new openai().random({ context: req.query?.summary?.toString() });
   res.send(summary);
 });
 

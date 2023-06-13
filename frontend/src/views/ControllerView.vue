@@ -37,11 +37,13 @@ const transcripts = reactive<{
   count: number | null;
   all: { id: number }[];
   summary: string;
+  lastSummary: string;
   selected: number[];
 }>({
   count: null,
   all: [],
   summary: '',
+  lastSummary: '',
   selected: [],
 });
 const iosAddressBarHeight = ref(0);
@@ -64,6 +66,7 @@ const processManualSummary = async () => {
     emitter.emit('error', error);
   }
   transcripts.summary = '';
+  transcripts.lastSummary = '';
 };
 
 const getState = async () => {
@@ -78,8 +81,13 @@ const getState = async () => {
 const getRandomSummary = async () => {
   try {
     loadingRandom.value = true;
-    const { data } = await ApiService.get('summary/random');
+    const summary = transcripts.summary !== transcripts.lastSummary ? transcripts.summary : null;
+    transcripts.summary = '';
+    const { data } = await ApiService.get('summary/random', {
+      summary,
+    });
     transcripts.summary = data;
+    transcripts.lastSummary = data;
     loadingRandom.value = false;
   } catch (error) {
     loadingRandom.value = false;
@@ -436,17 +444,27 @@ watch(
               v-model="transcripts.summary"
               class="w-full h-full"
               style="resize: none; padding-right: 100px"
+              :disabled="loadingRandom"
             />
             <div class="action-buttons">
               <Button
-                v-tooltip.left="'Generate Random AI Summary'"
+                v-tooltip.left="
+                  transcripts.summary && transcripts.summary !== transcripts.lastSummary
+                    ? 'Generate Random AI Summary About: ' + transcripts.summary
+                    : 'Generate Random AI Summary'
+                "
                 :icon="loadingRandom ? 'pi pi-spinner pi-spin' : 'fa-solid fa-shuffle'"
                 size="small"
                 class="mr-2"
                 @click="getRandomSummary"
                 :disabled="loadingRandom"
               />
-              <Button icon="pi pi-check" size="small" @click="processManualSummary" :disabled="!transcripts.summary" />
+              <Button
+                icon="pi pi-check"
+                size="small"
+                @click="processManualSummary"
+                :disabled="!transcripts.summary || loadingRandom"
+              />
             </div>
           </div>
         </div>
