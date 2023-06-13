@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch, onMounted, computed } from 'vue';
+import { ref, watch, onMounted, computed, onBeforeUnmount } from 'vue';
 
 import time from '@/utils/time';
 import constants from '@/utils/constants';
@@ -18,6 +18,18 @@ const delayed = ref({
   createdAt: '',
 });
 const frameClass = ref<string>('first-load');
+const aspectRatio = ref({
+  window: 0,
+  image: 0,
+});
+
+const setImageAspectRatio = (img: HTMLImageElement): void => {
+  aspectRatio.value.image = img.width / img.height;
+};
+
+const setWindowAspectRatio = (): void => {
+  aspectRatio.value.window = parseFloat((window.innerWidth / window.innerHeight).toFixed(2));
+};
 
 watch(
   () => props.image,
@@ -25,6 +37,7 @@ watch(
     const img = new Image();
     img.onload = () => {
       currentSrc.value = newSrc.filename;
+      setImageAspectRatio(img);
     };
     img.src = `${constants().api}/storage/image/${newSrc.filename}`;
 
@@ -52,6 +65,12 @@ const credit = (image: { [name: string]: any }) => {
 };
 
 onMounted(() => {
+  const img = new Image();
+  img.onload = () => {
+    setImageAspectRatio(img);
+  };
+  img.src = imageUrl.value;
+
   delayed.value.summary = props.summary.summary;
   delayed.value.credit = credit(props.image);
   delayed.value.createdAt = time.ago(props.image.createdAt);
@@ -63,6 +82,12 @@ onMounted(() => {
     frameClass.value = '';
     emitter.emit('isAnimating', false);
   }, 2650);
+  setWindowAspectRatio();
+  window.addEventListener('resize', setWindowAspectRatio);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', setWindowAspectRatio);
 });
 </script>
 
@@ -80,7 +105,17 @@ onMounted(() => {
       <div class="credit created-at border-round" v-if="summary.visible">
         <div class="p-1">{{ delayed.createdAt }}</div>
       </div>
-      <div class="image-wrapper">
+      <div
+        class="image-wrapper"
+        :class="
+          aspectRatio.window === aspectRatio.image
+            ? ''
+            : aspectRatio.window < aspectRatio.image
+            ? 'full-width'
+            : 'full-height'
+        "
+        :style="{ aspectRatio: aspectRatio.image }"
+      >
         <div class="summary" v-if="summary.visible">
           <div class="p-3 border-round">
             {{ delayed.summary }}
@@ -97,12 +132,17 @@ onMounted(() => {
   position: absolute;
 
   .image-wrapper {
-    width: 100%;
-    height: auto;
     text-align: center;
-    @media all and (orientation: landscape) {
-      width: auto;
+    width: 100%;
+
+    &.full-width {
+      width: 100%;
+      height: auto;
+    }
+
+    &.full-height {
       height: 100%;
+      width: auto;
     }
 
     .summary {
@@ -111,9 +151,6 @@ onMounted(() => {
       left: 25px;
       bottom: 25px;
       z-index: 1;
-      // @media (max-aspect-ratio: 6/8) {
-      //   bottom: -75px;
-      // }
 
       div {
         display: inline-block;
@@ -126,10 +163,7 @@ onMounted(() => {
 
     img {
       width: 100%;
-      @media all and (orientation: landscape) {
-        height: 100%;
-        width: auto;
-      }
+      display: block;
       box-shadow: 0 0 25px 15px rgba(0, 0, 0, 0.5);
     }
   }
