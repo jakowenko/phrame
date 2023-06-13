@@ -2,6 +2,12 @@ export default {
   telemetry: true,
   logs: { level: 'verbose' },
   time: { timezone: 'UTC', format: null },
+  autogen: {
+    cron: '15,45 * * * *',
+    prompt:
+      'Provide a random short description to describe a picture. It should be no more than one or two sentences. If keywords are provided select a couple at random to help guide the description.',
+    keywords: [],
+  },
   image: {
     interval: 60,
     order: 'recent',

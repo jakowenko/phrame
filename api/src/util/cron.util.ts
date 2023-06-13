@@ -14,6 +14,7 @@ const { version } = require('../../package.json');
 const {
   TELEMETRY,
   TRANSCRIPT: { CRON, MINUTES, MINIMUM },
+  AUTOGEN,
 } = config();
 
 export default {
@@ -94,5 +95,24 @@ export default {
       log.error(error.message);
     }
   },
+  autogen: async () => {
+    const { log } = new Log('autogen');
+    try {
+      new CronJob(AUTOGEN.CRON, async () => {
+        const { autogen } = state.get();
+        if (!autogen) {
+          log.verbose('paused');
+          return;
+        }
+        const openai = (await import('../ai/openai')).default;
+        const summary = await new openai().random({
+          prompt: AUTOGEN.PROMPT,
+          context: AUTOGEN.KEYWORDS.join(', '),
+        });
+        emitter.emit('summary.create', summary);
+      }).start();
+    } catch (error: any) {
+      log.error(error.message);
+    }
   },
 };

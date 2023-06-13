@@ -47,6 +47,7 @@ const start = async () => {
     emitter.setup();
     socket.connect(server);
     cron.transcript();
+    cron.autogen();
     cron.heartbeat();
   });
 };

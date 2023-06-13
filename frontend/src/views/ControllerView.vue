@@ -87,7 +87,7 @@ const getRandomSummary = async () => {
   }
 };
 
-const toggle = async (key: 'cron' | 'mic' | 'summary') => {
+const toggle = async (key: 'cron' | 'mic' | 'summary' | 'autogen') => {
   if (key === 'cron') {
     socket.emit('state:patch', { cron: state.value.cron });
     toast.add({
@@ -112,6 +112,14 @@ const toggle = async (key: 'cron' | 'mic' | 'summary') => {
     toast.add({
       severity: 'info',
       detail: `Summary ${state.value.image.summary ? 'Enabled' : 'Disabled'}`,
+      life: 3000,
+    });
+  }
+  if (key === 'autogen') {
+    socket.emit('state:patch', { to: 'controller', autogen: state.value.autogen });
+    toast.add({
+      severity: 'info',
+      detail: `Autogen Processing ${state.value.autogen ? 'Enabled' : 'Disabled'}`,
       life: 3000,
     });
   }

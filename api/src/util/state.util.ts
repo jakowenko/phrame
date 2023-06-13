@@ -11,6 +11,7 @@ const {
 let STATE: { [name: string]: any } = {
   processing: false,
   cron: true,
+  autogen: false,
   image: {
     index: 0,
     summary: true,
