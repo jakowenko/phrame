@@ -45,3 +45,11 @@ export const arrayToCommaSeparatedSentence = (array: [string], conjunction = 'an
   }
   return commaSeparatedSentence;
 };
+
+export const aiToTitleCase = (str: string): string => {
+  if (str === 'openai') return 'OpenAI';
+  if (str === 'stabilityai') return 'Stability AI';
+  if (str === 'deepai') return 'DeepAI';
+  if (str === 'leonardoai') return 'Leonardo.Ai';
+  return str.replace(/(\w)(\w*)/g, (g0, g1, g2) => g1.toUpperCase() + g2.toLowerCase());
+};

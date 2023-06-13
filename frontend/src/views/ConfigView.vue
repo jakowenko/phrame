@@ -9,6 +9,7 @@ import socket from '@/utils/socket';
 import { ApiService } from '@/services/api.service';
 import sleep from '@/utils/sleep';
 import emitter from '@/services/emitter.service';
+import { aiToTitleCase } from '@/utils/functions';
 
 ace.config.set('basePath', 'js/ace');
 
@@ -98,7 +99,7 @@ const checkServices = async () => {
 
     for (const configuredAI of data) {
       services.value.push({
-        name: configuredAI.ai.replace('openai', 'OpenAI').replace('stabilityai', 'Stability AI'),
+        name: aiToTitleCase(configuredAI.ai),
         status: configuredAI.status === true ? 200 : 500,
         tooltip:
           configuredAI.status === true

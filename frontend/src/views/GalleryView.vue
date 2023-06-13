@@ -16,6 +16,7 @@ import { ApiService } from '@/services/api.service';
 import time from '@/utils/time';
 import GalleryRow from '@/components/GalleryRow.vue';
 import sleep from '@/utils/sleep';
+import { aiToTitleCase } from '@/utils/functions';
 import constants from '@/utils/constants';
 
 interface Gallery {
@@ -67,7 +68,7 @@ const total = ref<{ summaries: number | null; images: number | null; favorites: 
   images: null,
   favorites: null,
 });
-const filters = ref<{ favorites: object[]; ais: object[]; styles: object[]; loading: boolean }>({
+const filters = ref<{ favorites: FilterValue[]; ais: FilterValue[]; styles: FilterValue[]; loading: boolean }>({
   favorites: [
     { name: 'Favorited', value: true },
     { name: 'Not Favorited', value: false },
@@ -76,7 +77,13 @@ const filters = ref<{ favorites: object[]; ais: object[]; styles: object[]; load
   styles: [],
   loading: true,
 });
-const selected = ref<{ favorites: object[]; ais: object[]; styles: object[]; images: number[]; summary: string }>({
+const selected = ref<{
+  favorites: FilterValue[];
+  ais: FilterValue[];
+  styles: FilterValue[];
+  images: number[];
+  summary: string;
+}>({
   favorites: filters.value.favorites,
   ais: [],
   styles: [],
@@ -107,10 +114,16 @@ const getFilters = async () => {
   try {
     filters.value.loading = true;
     const { data } = await ApiService.get('gallery/filters');
-    filters.value.ais = data.ai;
-    filters.value.styles = data.style;
-    if (!selected.value.ais.length) selected.value.ais = data.ai || [];
-    if (!selected.value.styles.length) selected.value.styles = data.style || [];
+    filters.value.ais = data.ai.map(({ name, value }: FilterValue) => ({
+      name: aiToTitleCase(name),
+      value,
+    }));
+    filters.value.styles = data.style.map(({ name, value }: FilterValue) => ({
+      name: aiToTitleCase(name),
+      value,
+    }));
+    if (!selected.value.ais.length) selected.value.ais = filters.value.ais;
+    if (!selected.value.styles.length) selected.value.styles = filters.value.styles;
     filters.value.loading = false;
   } catch (error) {
     emitter.emit('error', error);
