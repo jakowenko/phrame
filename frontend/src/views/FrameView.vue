@@ -67,7 +67,7 @@ const resetMouseTimer = () => {
 };
 
 const changeImageTimeout = () => {
-  if (!imageTimeout.value) return;
+  if (!imageTimeout.value || !state.value.image?.cycle) return;
   clearTimeout(imageSetTimeout);
   imageSetTimeout = setTimeout(changeImage, imageTimeout.value * 1000);
   socket.emit('state:patch', {
@@ -92,6 +92,7 @@ const onAfterLeave = () => {
   isAnimating.value = false;
 };
 const animateProgressBar = () => {
+  if (!state.value.image?.cycle) return;
   progress.width = 100;
   progress.count = 0;
   clearInterval(progress.interval);
