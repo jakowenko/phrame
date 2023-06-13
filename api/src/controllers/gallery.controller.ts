@@ -1,9 +1,14 @@
 // @ts-nocheck
 import express from 'express';
+import sharp from 'sharp';
 
 import { NOT_FOUND } from '../constants/http-status';
+import config from '../config';
 
 const router = express.Router();
+const {
+  SYSTEM: { STORAGE },
+} = config();
 
 type Image = {
   key: string;
@@ -12,6 +17,15 @@ type Image = {
 
 type GroupedImages = {
   [key: string]: { name: string; value: string }[];
+};
+
+const calculateAspectRatio = async (filename: string): Promise<ImageDimensions> => {
+  try {
+    const metadata = await sharp(`${STORAGE.IMAGE.PATH}/${filename}`).metadata();
+    return metadata.width! / metadata.height!;
+  } catch (error) {
+    return 1;
+  }
 };
 
 const toTitleCase = (str: string): string => {
@@ -176,6 +190,12 @@ router.get('/', async (req, res) => {
       ),
     }));
   });
+
+  for (const summary of summaries) {
+    for (const image of summary.image) {
+      image.meta.aspectRatio = await calculateAspectRatio(image.filename);
+    }
+  }
 
   if (summaryId) {
     if (!summaries.length) return res.status(NOT_FOUND).send({ error: 'not found' });

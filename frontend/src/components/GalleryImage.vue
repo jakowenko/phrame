@@ -54,37 +54,33 @@ const openModal = () => {
 <template>
   <main>
     <div class="cursor-pointer click-wrapper" @click="toggleSelected"></div>
-    <div v-if="hasError" style="position: absolute; top: 50%; left: 50%; margin-left: -1rem">
-      <i class="pi pi-exclamation-circle" style="font-size: 2rem"></i>
+    <div v-if="hasError" style="position: absolute; top: 50%; left: 50%; margin-top: -1rem; margin-left: -0.75rem">
+      <i class="pi pi-exclamation-circle" style="font-size: 1.5rem"></i>
     </div>
     <div
       v-else-if="!loaded"
       class="loading-spinner"
-      style="position: absolute; top: 50%; left: 50%; margin-left: -0.75rem"
+      style="position: absolute; top: 50%; left: 50%; margin-top: -1rem; margin-left: -0.75rem"
     >
       <i class="pi pi-spin pi-spinner" style="font-size: 1.5rem"></i>
     </div>
-    <div v-else class="btn-holder border-round">
-      <i
-        class="pi favorite-btn"
-        :class="favorite ? 'pi-star-fill' : 'pi-star'"
-        :style="favorite ? 'color: var(--yellow-400)' : ''"
-        @click="favorite = !favorite"
-      ></i>
-      <i class="pi pi-external-link" @click="openModal"></i>
-      <i class="pi pi-trash trash-btn" @click="deleteImage"></i>
+    <div :style="{ aspectRatio: image.meta.aspectRatio }">
+      <div class="btn-holder border-round text-center">
+        <i
+          class="favorite-btn"
+          :class="favorite ? 'fas fa-star' : 'far fa-star'"
+          :style="favorite ? 'color: var(--yellow-400)' : ''"
+          @click="favorite = !favorite"
+        ></i>
+        <i class="fas fa-expand" @click="openModal"></i>
+        <i class="fas fa-trash-can trash-btn" @click="deleteImage"></i>
+      </div>
+      <div v-if="props.selected" class="border border-round"></div>
+      <VLazyImage :src="imageUrl" @error="loadError" @load="loaded = true" class="thumbnail border-round" />
     </div>
-    <div v-if="props.selected" class="border border-round"></div>
-    <VLazyImage
-      :src="imageUrl"
-      @error="loadError"
-      @load="loaded = true"
-      class="thumbnail border-round"
-      :class="hasError ? 'error' : ''"
-    />
     <div class="flex justify-content-center chip-wrapper w-full">
-      <Chip :label="image.meta.ai" class="text-xs mr-2 mb-1" />
-      <Chip :label="image.meta.style" class="text-xs mb-1" />
+      <Chip :label="image.meta.ai" class="text-xs mr-2" />
+      <Chip :label="image.meta.style" class="text-xs" />
     </div>
   </main>
 </template>
@@ -102,14 +98,10 @@ const openModal = () => {
 }
 
 img.thumbnail {
-  width: 100%;
+  max-width: 100%;
   display: block;
   transition: opacity 1s;
   opacity: 0;
-
-  &.error {
-    padding-top: 75%;
-  }
 }
 
 img.v-lazy-image-loaded {
@@ -149,8 +141,10 @@ img.v-lazy-image-loaded {
 .chip-wrapper {
   position: absolute;
   bottom: 0;
-  z-index: 1;
   padding: 0.5rem;
+  @media only screen and (max-width: 576px) {
+    position: relative;
+  }
 
   .p-chip {
     max-width: 50%;
@@ -160,12 +154,6 @@ img.v-lazy-image-loaded {
       text-overflow: ellipsis !important;
       white-space: nowrap;
     }
-  }
-}
-
-@media only screen and (max-width: 576px) {
-  .loading-spinner {
-    margin-top: -1rem;
   }
 }
 </style>

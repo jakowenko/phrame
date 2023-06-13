@@ -29,6 +29,9 @@ type Image = {
   summaryId: number;
   filename: string;
   favorite: boolean;
+  meta: {
+    aspectRatio: number;
+  };
 };
 
 type FilterValue = {
@@ -42,6 +45,10 @@ const props = defineProps<{
 }>();
 const confirm = useConfirm();
 const hasMore = ref(false);
+const aspectRatio = ref({
+  image: 0,
+  window: 0,
+});
 const modal = ref<{ show: boolean; src: string; image: { [name: string]: any }; summary: string }>({
   show: false,
   src: '',
@@ -107,6 +114,10 @@ const getFilters = async () => {
   } catch (error) {
     emitter.emit('error', error);
   }
+};
+
+const setWindowAspectRatio = (): void => {
+  aspectRatio.value.window = parseFloat((window.innerWidth / window.innerHeight).toFixed(2));
 };
 
 const updateGalleryIds = () => {
@@ -261,6 +272,7 @@ const closeModal = () => {
   modal.value.show = false;
   setTimeout(() => {
     modal.value.src = '';
+    aspectRatio.value.image = 0;
   }, 500);
 };
 
@@ -288,9 +300,11 @@ const modalImage = async (direction: 'next' | 'prev') => {
 const loadModalImage = (image: Image) => {
   modal.value.src = '';
   modal.value.image = image;
+  if (!aspectRatio.value.image) aspectRatio.value.image = image.meta.aspectRatio;
   setTimeout(() => {
     const img = new Image();
     img.onload = () => {
+      aspectRatio.value.image = image.meta.aspectRatio;
       modal.value.src = img.src;
       modal.value.summary = galleries.value.find((gallery) => gallery.id === image.summaryId)?.summary || '';
     };
@@ -339,6 +353,7 @@ onBeforeUnmount(() => {
   });
   window.removeEventListener('scroll', handleScroll);
   window.removeEventListener('keydown', modalNavigation);
+  window.removeEventListener('resize', setWindowAspectRatio);
 });
 
 onBeforeMount(() => {
@@ -415,6 +430,8 @@ onBeforeMount(() => {
 onMounted(async () => {
   await getFilters();
   await getGallery(true);
+  setWindowAspectRatio();
+  window.addEventListener('resize', setWindowAspectRatio);
 });
 
 watch(
@@ -454,7 +471,17 @@ watch(
 <template>
   <Transition name="fade">
     <div class="modal flex justify-content-center align-items-center" v-if="modal.show" @click.self="closeModal">
-      <div class="inner">
+      <div
+        class="inner"
+        :style="{ aspectRatio: aspectRatio.image }"
+        :class="
+          aspectRatio.window === aspectRatio.image
+            ? ''
+            : aspectRatio.window < aspectRatio.image
+            ? 'full-width'
+            : 'full-height'
+        "
+      >
         <i v-if="!modal.src" class="pi pi-spin pi-spinner align-self-center" style="font-size: 2rem"></i>
         <Transition name="fade">
           <div v-if="modal.src">
@@ -681,10 +708,13 @@ watch(
 
   .inner {
     cursor: default;
-    height: 80%;
-    aspect-ratio: 1;
+    width: 80%;
 
-    @media (orientation: portrait) {
+    &.full-height {
+      width: auto;
+      height: 80%;
+    }
+    &.full-width {
       width: 80%;
       height: auto;
     }
@@ -759,6 +789,15 @@ button.yellow :deep(.p-button-icon) {
   }
   .p-chip :deep(.p-chip-icon) {
     display: none;
+  }
+}
+
+@media only screen and (max-height: 576px) {
+  .modal {
+    .chip-wrapper,
+    p {
+      display: none;
+    }
   }
 }
 </style>

@@ -35,7 +35,11 @@ onMounted(() => {
             </div>
             <div class="col-12 mt-3">
               <div class="grid grid-nogutter">
-                <div v-for="image in gallery.image" :key="image" class="image col-6 md:col-3 mr-3 mb-3">
+                <div
+                  v-for="image in gallery.image"
+                  :key="image"
+                  class="image col-6 md:col-3 mr-3 mb-3 align-self-center"
+                >
                   <GalleryImage :image="{ ...image }" :selected="selected.includes(image.id)" />
                 </div>
               </div>
