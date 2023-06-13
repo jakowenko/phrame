@@ -160,7 +160,11 @@ const getGalleryById = async (summaryId: number) => {
   const galleryIds = galleries.value.map((gallery) => gallery.id);
   const index = galleryIds.indexOf(data.id);
   if (galleryIds.includes(data.id)) {
-    galleries.value[index] = data;
+    data.image.forEach((image: Image) => {
+      if (!galleries.value[index].image.some((i) => i.id === image.id)) {
+        galleries.value[index].image.unshift(image);
+      }
+    });
   } else {
     galleries.value.unshift(data);
   }
