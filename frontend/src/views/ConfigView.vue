@@ -23,11 +23,12 @@ const waitForRestart = ref(false);
 let timeout: ReturnType<typeof setTimeout>;
 const status = ref<HTMLElement | null>(null);
 const statusHeight = ref<number>(0);
-const services = ref<Array<{ name: string; status?: any; tooltip?: any }>>([
+const services = ref<Array<{ name: string; status?: any; tooltip?: any; services: string[] }>>([
   {
     name: 'Phrame',
     status: null,
     tooltip: null,
+    services: [],
   },
 ]);
 
@@ -101,6 +102,7 @@ const checkServices = async () => {
       services.value.push({
         name: aiToTitleCase(configuredAI.ai),
         status: configuredAI.status === true ? 200 : 500,
+        services: configuredAI.services,
         tooltip:
           configuredAI.status === true
             ? `Image Service ${configuredAI.services.includes('image') ? 'Enabled' : 'Disabled'}`
@@ -162,8 +164,9 @@ onMounted(async () => {
               : service.tooltip
           "
           class="flex align-items-center mr-2"
-          v-for="service in services"
+          v-for="(service, index) in services"
           :key="service.name"
+          :class="{ 'no-image': index > 0 && !service.services.includes('image') }"
         >
           <div
             v-if="service.status"
@@ -230,6 +233,8 @@ ul.service-status {
   list-style: none;
   margin: 0;
   padding: 0;
+  white-space: nowrap;
+  overflow-x: auto;
 
   .icon {
     width: 10px;
@@ -241,6 +246,12 @@ ul.service-status {
 
   li {
     cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  li.no-image {
+    opacity: 0.35;
   }
 
   .icon.pulse {
