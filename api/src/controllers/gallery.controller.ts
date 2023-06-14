@@ -1,14 +1,18 @@
-// @ts-nocheck
 import express from 'express';
 import sharp from 'sharp';
 
 import { NOT_FOUND } from '../constants/http-status';
 import config from '../config';
+import { Summary } from '@prisma/client';
 
 const router = express.Router();
 const {
   SYSTEM: { STORAGE },
 } = config();
+
+interface ExtendedSummary extends Summary {
+  image: any[];
+}
 
 type Image = {
   key: string;
@@ -19,7 +23,17 @@ type GroupedImages = {
   [key: string]: { name: string; value: string }[];
 };
 
-const calculateAspectRatio = async (filename: string): Promise<ImageDimensions> => {
+type FilterParams = {
+  limit?: string;
+  summaryId?: string;
+  beforeSummaryId?: string;
+  favorites?: string;
+  ais?: string;
+  styles?: string;
+  summary?: string;
+};
+
+const calculateAspectRatio = async (filename: string): Promise<number> => {
   try {
     const metadata = await sharp(`${STORAGE.IMAGE.PATH}/${filename}`).metadata();
     return metadata.width! / metadata.height!;
@@ -51,9 +65,10 @@ router.get('/filters', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-  const { limit, summaryId, beforeSummaryId, favorites, ais, styles, summary } = req.query;
+  const { limit, summaryId, beforeSummaryId, favorites, ais, styles, summary }: FilterParams =
+    req.query;
   let favoriteFilter = {};
-  let searchSummaryIds = false;
+  let searchSummaryIds: boolean | number[] = false;
 
   if (favorites) {
     if (favorites.includes('true') && favorites.includes('false')) {
@@ -149,10 +164,10 @@ router.get('/', async (req, res) => {
   });
 
   const summaryIds = [...new Set(images.map((obj) => obj.summaryId))];
-  const summaries = await req.prisma.summary.findMany({
+  const summaries = (await req.prisma.summary.findMany({
     ...(limit !== 'false' && { take: 10 }),
     where: {
-      ...(searchSummaryIds.length && { id: { in: searchSummaryIds } }),
+      ...(searchSummaryIds && searchSummaryIds.length && { id: { in: searchSummaryIds } }),
       ...(summaryId
         ? { id: Number(summaryId) }
         : beforeSummaryId
@@ -162,7 +177,7 @@ router.get('/', async (req, res) => {
           }),
     },
     orderBy: { createdAt: 'desc' },
-  });
+  })) as ExtendedSummary[];
 
   summaries.forEach((summary: { [key: string]: any }) => {
     summary.image = images.filter(({ summaryId }) => summaryId === summary.id);
