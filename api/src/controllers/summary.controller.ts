@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
 
 router.get('/random', async (req, res) => {
   if (!config.ai().some((obj) => obj.ai === 'openai'))
-    return res.status(BAD_REQUEST).send({ error: 'Open AI not configured' });
+    return res.status(BAD_REQUEST).send({ error: 'OpenAI not configured' });
 
   const openai = (await import('../ai/openai')).default;
   const summary = await new openai().random({ context: req.query?.summary?.toString() });
