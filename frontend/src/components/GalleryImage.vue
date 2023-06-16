@@ -55,7 +55,7 @@ const openModal = () => {
   <main>
     <div class="cursor-pointer click-wrapper" @click="toggleSelected"></div>
     <div v-if="hasError" style="position: absolute; top: 50%; left: 50%; margin-top: -1rem; margin-left: -0.75rem">
-      <i class="pi pi-exclamation-circle" style="font-size: 1.5rem"></i>
+      <i class="fas fa-circle-exclamation" style="font-size: 1.5rem"></i>
     </div>
     <div
       v-else-if="!loaded"
@@ -117,7 +117,7 @@ img.v-lazy-image-loaded {
   border-top-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 
-  .pi {
+  i {
     font-size: 1rem;
     display: block;
     cursor: pointer;

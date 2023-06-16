@@ -14,26 +14,27 @@ const toolbar: Ref<HTMLElement | null> = ref(null);
 const isUpdateAvailable = ref<boolean | string>(false);
 const socketClass = ref('gray');
 const navigation = ref([
-  { label: 'Phrame', icon: 'pi pi-fw fa fa-image', to: '/phrame' },
-  { label: 'Controller', icon: 'pi pi-fw fa fa-gamepad', to: '/' },
-  { label: 'Gallery', icon: 'pi pi-fw fa fa-images', to: '/gallery' },
+  { label: 'Phrame', icon: 'pi fas fa-image', to: '/phrame' },
+  { label: 'Controller', icon: 'pi fas fa-gamepad', to: '/' },
+  { label: 'Gallery', icon: 'pi  fas fa-images', to: '/gallery' },
 ]);
 const menuItems = ref([
   {
     label: `v${version}`,
+    icon: 'pi fab fa-github',
     command: () => {
       window.open('https://github.com/jakowenko/phrame');
     },
   },
+  { label: 'Config', icon: 'pi fas fa-gear', to: '/config' },
+  { label: 'Logs', icon: 'pi fas fa-rectangle-list', to: '/logs' },
   {
     label: 'Sponsor',
-    icon: 'pi pi-heart',
+    icon: 'pi fas fa-heart animate',
     command: () => {
       window.open('https://github.com/sponsors/jakowenko');
     },
   },
-  { label: 'Config', icon: 'pi pi-fw pi-cog', to: '/config' },
-  { label: 'Logs', icon: 'pi pi-fw pi-book', to: '/logs' },
 ]);
 
 const getHeight = () => toolbar.value?.clientHeight || 0;

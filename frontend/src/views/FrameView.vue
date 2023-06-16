@@ -372,7 +372,7 @@ watch(
           v-if="state.image.cycle && images.length > 1"
           :style="{ width: progress.width + '%' }"
         ></div>
-        <i id="cycle-status" :class="!state.image.cycle ? 'pi pi-pause' : 'hidden'"></i>
+        <i id="cycle-status" :class="!state.image.cycle ? 'fas fa-pause' : 'hidden'"></i>
         <FramePhoto
           class="picture-frame"
           :image="image"
@@ -401,8 +401,8 @@ watch(
 
 #cycle-status {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 4px;
+  right: 5px;
   z-index: 2;
   font-size: 0.8rem;
   opacity: 0.25;

@@ -70,7 +70,7 @@ onMounted(async () => {
           v-if="size"
           type="button"
           :label="size"
-          icon="pi pi-trash"
+          icon="fas fa-trash-can"
           class="p-button-sm p-button-danger mt-2 mr-2"
           @click="deleteLogs"
           :disabled="size === '0 Bytes'"

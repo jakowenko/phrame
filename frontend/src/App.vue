@@ -255,6 +255,22 @@ body {
     font-weight: bold;
     font-size: 0.75rem;
   }
+
+  .fa-heart.animate {
+    animation: 3s ease infinite beat;
+  }
+
+  @keyframes beat {
+    0%,
+    50%,
+    100% {
+      transform: scale(1.05, 1.08);
+    }
+    30%,
+    80% {
+      transform: scale(0.92, 0.95);
+    }
+  }
 }
 
 .p-multiselect .p-multiselect-trigger {
@@ -281,5 +297,9 @@ body {
   @media only screen and (max-width: 576px) {
     font-size: 16px;
   }
+}
+
+.p-button.p-button-sm .p-button-icon {
+  font-size: 1rem;
 }
 </style>

@@ -506,12 +506,12 @@ watch(
           <div v-if="modal.src">
             <div class="btn-holder border-round">
               <i
-                class="pi favorite-btn"
-                :class="modal.image.favorite ? 'pi-star-fill' : 'pi-star'"
+                class="favorite-btn"
+                :class="modal.image.favorite ? 'fas fa-star' : 'far fa-star'"
                 :style="modal.image.favorite ? 'color: var(--yellow-400)' : ''"
                 @click="favoriteImage(modal.image.id, !modal.image.favorite)"
               ></i>
-              <i class="pi pi-trash trash-btn" @click="deleteImage(modal.image.id)"></i>
+              <i class="fas fa-trash-can" @click="deleteImage(modal.image.id)"></i>
             </div>
             <img :src="modal.src" class="border-round" />
             <p>{{ modal.summary }}</p>
@@ -522,14 +522,14 @@ watch(
             </div>
           </div>
         </Transition>
-        <i class="pi pi-times close-btn" @click="closeModal" />
+        <i class="fas fa-xmark close-btn" @click="closeModal" />
         <i
           v-if="total.images && total.images > 1"
-          class="pi pi-angle-left prev-btn"
+          class="fas fa-angle-left prev-btn"
           text
           @click="modalImage('prev')"
         ></i>
-        <i v-if="total.images && total.images > 1" class="pi pi-angle-right next-btn" @click="modalImage('next')"></i>
+        <i v-if="total.images && total.images > 1" class="fas fa-angle-right next-btn" @click="modalImage('next')"></i>
       </div>
     </div>
   </Transition>
@@ -584,7 +584,7 @@ watch(
       <div class="grid mt-1 pl-3 pr-3">
         <div class="flex col-7" style="overflow: auto; white-space: nowrap">
           <Chip
-            icon="pi pi-book"
+            icon="pi fas fa-rectangle-list"
             :label="
               (total.summaries === null ? '-' : total.summaries.toString()) +
               ' ' +
@@ -593,12 +593,12 @@ watch(
             class="text-sm mr-2 align-self-center"
           />
           <Chip
-            icon="pi fa fa-images"
+            icon="pi fas fa-images"
             :label="(total.images === null ? '-' : total.images.toString()) + ' ' + inflect('Image', total.images || 0)"
             class="text-sm mr-2 align-self-center"
           />
           <Chip
-            icon="pi fa fa-images"
+            icon="pi fas fa-star"
             :label="
               (total.favorites === null ? '-' : total.favorites.toString()) +
               ' ' +
@@ -612,7 +612,7 @@ watch(
           <div class="mr-2">
             <Button
               v-tooltip.left="allSelected() ? 'Unselect All' : 'Select All'"
-              :icon="allSelected() ? 'fa fa-check-square' : 'far fa-check-square'"
+              :icon="allSelected() ? 'fas fa-check-square' : 'far fa-check-square'"
               size="small"
               @click="toggleSelectAll"
               class="flex"
@@ -622,7 +622,7 @@ watch(
           <div class="mr-2">
             <Button
               v-tooltip.left="favoritesDefault ? 'Unfavorite Selected' : 'Favorite Selected'"
-              :icon="favoritesDefault ? 'pi pi-star-fill' : 'pi pi-star'"
+              :icon="favoritesDefault ? 'fas fa-star' : 'far fa-star'"
               size="small"
               @click="favoriteSelected"
               :class="{ yellow: favoritesDefault }"
@@ -632,7 +632,7 @@ watch(
           </div>
           <div>
             <Button
-              icon="pi pi-trash"
+              icon="fas fa-trash-can"
               v-tooltip.left="'Delete Selected'"
               size="small"
               @click="deleteSelected"
@@ -689,10 +689,10 @@ watch(
     padding: 0.5rem 0.6rem;
     position: absolute;
     z-index: 1;
-    top: -0.5rem;
+    top: -0.7rem;
     right: -2.5rem;
     cursor: pointer;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
   }
 
   .close-btn:hover,
@@ -705,11 +705,12 @@ watch(
   .prev-btn {
     position: absolute;
     top: 50%;
-    margin-top: -1rem;
+    margin-top: -1.75rem;
     right: -2.5rem;
     z-index: 1;
-    font-size: 2.5rem;
+    font-size: 2rem;
     cursor: pointer;
+    padding: 0.5rem 0.75rem;
   }
 
   .prev-btn {
@@ -769,9 +770,10 @@ watch(
     background-color: rgba(0, 0, 0, 0.5);
     border-top-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+    text-align: center;
 
-    .pi {
-      font-size: 1rem;
+    i {
+      font-size: 1.25rem;
       display: block;
       cursor: pointer;
       padding: 0.5rem;
