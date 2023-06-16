@@ -25,6 +25,7 @@
     "lint:stylelint": "stylelint --fix"
   },
   "dependencies": {
+    "@vueuse/core": "^10.1.2",
     "ace-builds": "^1.22.0",
     "audio-recorder-polyfill": "^0.4.1",
     "axios": "^1.4.0",

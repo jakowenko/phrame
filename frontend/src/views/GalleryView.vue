@@ -9,6 +9,8 @@ import Chip from 'primevue/chip';
 import MultiSelect from 'primevue/multiselect';
 import Button from 'primevue/button';
 import { useConfirm } from 'primevue/useconfirm';
+import type { UseSwipeDirection } from '@vueuse/core';
+import { useSwipe } from '@vueuse/core';
 
 import socket from '@/utils/socket';
 import emitter from '@/services/emitter.service';
@@ -290,6 +292,7 @@ const fixSelectPanel = (value: boolean) => {
 
 const closeModal = () => {
   modal.value.show = false;
+  document.body.style.overflow = 'auto';
   setTimeout(() => {
     modal.value.src = '';
     aspectRatio.value.image = 0;
@@ -397,6 +400,7 @@ onBeforeMount(() => {
     if (image && image.filename) {
       modal.value.show = true;
       modal.value.image = image;
+      document.body.style.overflow = 'hidden';
     }
 
     loadModalImage(image);
@@ -485,6 +489,15 @@ watch(
     await getGallery();
   },
 );
+const swipe = ref<HTMLElement | null>(null);
+if (window.matchMedia('(pointer: coarse)').matches) {
+  useSwipe(swipe, {
+    passive: false,
+    onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection) {
+      modalImage(direction === 'left' ? 'next' : 'prev');
+    },
+  });
+}
 </script>
 
 <template>
@@ -513,7 +526,7 @@ watch(
               ></i>
               <i class="fas fa-trash-can" @click="deleteImage(modal.image.id)"></i>
             </div>
-            <img :src="modal.src" class="border-round" />
+            <img ref="swipe" :src="modal.src" class="border-round" />
             <p>{{ modal.summary }}</p>
             <div class="text-center chip-wrapper w-full">
               <Chip :label="modal.image.meta.ai" class="text-xs mr-2" />
