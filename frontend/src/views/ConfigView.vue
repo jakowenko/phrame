@@ -192,7 +192,7 @@ onMounted(async () => {
         <div class="editor h-full">
           <div class="buttons mt-2 mr-2">
             <Button
-              icon="pi pi-refresh"
+              icon="fas fa-rotate-right"
               class="p-button-sm p-button-success mb-2"
               @click="reload"
               :disabled="loading"
@@ -200,7 +200,7 @@ onMounted(async () => {
             />
             <br />
             <Button
-              icon="fa fa-save"
+              icon="fas fa-save"
               class="p-button p-button-sm p-button-success"
               @click="save"
               :disabled="loading"
@@ -278,7 +278,7 @@ ul.service-status {
   .buttons {
     position: absolute;
     top: 0;
-    right: 0;
+    right: 5px;
     z-index: 1;
   }
 }

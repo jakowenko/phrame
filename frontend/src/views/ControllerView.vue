@@ -376,8 +376,8 @@ watch(
                   v-model="state.microphone.enabled"
                   onLabel=""
                   offLabel=""
-                  onIcon="pi pi-microphone"
-                  offIcon="pi pi-microphone"
+                  onIcon="fas fa-microphone"
+                  offIcon="fas fa-microphone-slash"
                   :disabled="state.microphone.enabled === null"
                   @click="toggle('mic')"
                   class="p-button-sm w-full h-full"
@@ -389,8 +389,8 @@ watch(
                   v-model="state.cron"
                   onLabel=""
                   offLabel=""
-                  onIcon="fa-regular fa-clock"
-                  offIcon="fa-regular fa-clock"
+                  onIcon="fas fa-clock"
+                  offIcon="fas fa-clock"
                   @click="toggle('cron')"
                   class="p-button-sm w-full h-full"
                   v-tooltip.bottom="'Toggle Transcript Processing'"
@@ -402,8 +402,8 @@ watch(
                   v-model="state.image.summary"
                   onLabel=""
                   offLabel=""
-                  onIcon="pi pi-book"
-                  offIcon="pi pi-book"
+                  onIcon="fas fa-rectangle-list"
+                  offIcon="fas fa-rectangle-list"
                   @click="toggle('summary')"
                   class="p-button-sm w-full h-full"
                   v-tooltip.bottom="'Toggle Summary Visibility'"
@@ -411,7 +411,7 @@ watch(
               </div>
               <div class="col-2">
                 <Button
-                  icon="pi pi-angle-left"
+                  icon="fas fa-backward"
                   @click="imageControl('prev')"
                   size="small"
                   class="w-full h-full"
@@ -420,7 +420,7 @@ watch(
               </div>
               <div class="col-2">
                 <Button
-                  :icon="state.image.cycle ? 'pi pi-pause' : 'pi pi-play'"
+                  :icon="state.image.cycle ? 'fas fa-pause' : 'fas fa-play'"
                   @click="imageControl('toggle')"
                   size="small"
                   class="w-full h-full"
@@ -429,7 +429,7 @@ watch(
               </div>
               <div class="col-2">
                 <Button
-                  icon="pi pi-angle-right"
+                  icon="fas fa-forward"
                   @click="imageControl('next')"
                   size="small"
                   class="w-full h-full"
@@ -443,7 +443,7 @@ watch(
               placeholder="Image summary"
               v-model="transcripts.summary"
               class="w-full h-full"
-              style="resize: none; padding-right: 100px"
+              style="resize: none; padding-right: 110px"
               :disabled="loadingRandom"
             />
             <div class="action-buttons">
@@ -453,14 +453,14 @@ watch(
                     ? 'Generate Random AI Summary About: ' + transcripts.summary
                     : 'Generate Random AI Summary'
                 "
-                :icon="loadingRandom ? 'pi pi-spinner pi-spin' : 'fa-solid fa-shuffle'"
+                :icon="loadingRandom ? 'pi pi-spinner pi-spin' : 'fas fa-shuffle'"
                 size="small"
                 class="mr-2"
                 @click="getRandomSummary"
                 :disabled="loadingRandom"
               />
               <Button
-                icon="pi pi-check"
+                icon="fas fa-check"
                 size="small"
                 @click="processManualSummary"
                 :disabled="!transcripts.summary || loadingRandom"
@@ -471,13 +471,13 @@ watch(
         <div class="transcript-buttons" v-if="transcripts.all.length">
           <div class="flex justify-content-end">
             <Button
-              icon="pi pi-trash"
+              icon="fas fa-trash-can"
               :label="transcripts.selected.length > 0 ? '(' + transcripts.selected.length + ')' : ''"
               @click="deleteTranscript"
               size="small"
               class="mr-2"
             />
-            <Button @click="processTranscript" size="small" icon="pi pi-check" />
+            <Button @click="processTranscript" size="small" icon="fas fa-check" />
           </div>
         </div>
       </div>
@@ -509,7 +509,12 @@ watch(
       allow microphone access.
     </p>
     <div class="flex justify-content-center mt-5">
-      <Button icon="pi pi-external-link" size="small" label="Launch Phrame with Microphone" @click="launchMic" />
+      <Button
+        icon="fas fa-arrow-up-right-from-square"
+        size="small"
+        label="Launch Phrame with Microphone"
+        @click="launchMic"
+      />
     </div>
   </Dialog>
 </template>
@@ -526,7 +531,7 @@ watch(
 
 .transcript-buttons {
   position: absolute;
-  top: calc(100% + 1rem);
+  top: calc(100% + 0.8rem);
   left: 0;
   right: 1.5rem;
 }
