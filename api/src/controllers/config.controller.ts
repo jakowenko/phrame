@@ -44,7 +44,7 @@ router.get('/service/status', async (req, res) => {
   });
   const data = (await Promise.all(promises)).map((result, i) => ({
     ...configuredAIs[i],
-    status: result,
+    status: result instanceof Error ? result.message : result,
   }));
   res.send(data);
 });
