@@ -317,10 +317,20 @@ const modalImage = async (direction: 'next' | 'prev') => {
   const nextImage = allImages.value[currentImageIndex + (direction === 'next' ? 1 : -1)] || restartImage;
 
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  if (nextImage) loadModalImage(nextImage);
+  if (nextImage) loadModalImage(nextImage, direction);
 };
 
-const loadModalImage = (image: Image) => {
+const loadModalImage = (image: Image, direction = 'next') => {
+  const preloadImage = () => {
+    const index = allImages.value.findIndex(({ id }) => id === image.id);
+    const { filename } =
+      direction === 'next'
+        ? allImages.value[index + 1] || allImages.value[0]
+        : allImages.value[index - 1] || _.last(allImages.value);
+    const preload = new Image();
+    preload.src = `${constants().api}/storage/image/${filename}`;
+  };
+
   modal.value.src = '';
   modal.value.image = image;
   if (!aspectRatio.value.image) aspectRatio.value.image = image.meta.aspectRatio;
@@ -330,6 +340,7 @@ const loadModalImage = (image: Image) => {
       aspectRatio.value.image = image.meta.aspectRatio;
       modal.value.src = img.src;
       modal.value.summary = galleries.value.find((gallery) => gallery.id === image.summaryId)?.summary || '';
+      preloadImage();
     };
     img.onerror = () => {
       if (total.value.images === 0) closeModal();
