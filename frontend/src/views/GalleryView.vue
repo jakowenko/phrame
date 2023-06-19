@@ -61,7 +61,7 @@ const modal = ref<{ show: boolean; src: string; image: { [name: string]: any }; 
 });
 const fixed: Ref<HTMLElement | null> = ref(null);
 const loading = ref(true);
-const scrollIds: number[] = [];
+const scrollIds = ref<number[]>([]);
 const galleries = ref<Gallery[]>([]);
 const oldestGalleryId = ref(0);
 const favoritesDefault = ref(false);
@@ -154,6 +154,7 @@ const getGallery = async (firstLoad?: boolean) => {
     total.value = data.total;
     hasMore.value = data.hasMore;
     updateGalleryIds();
+    scrollIds.value = [];
     loading.value = false;
   } catch (error) {
     emitter.emit('error', error);
@@ -189,8 +190,8 @@ const handleScroll = async () => {
   const totalScrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
   if (window.scrollY + 50 >= totalScrollableHeight) {
     const { id: beforeId } = galleries.value[galleries.value.length - 1];
-    if (scrollIds.includes(beforeId)) return;
-    scrollIds.push(beforeId);
+    if (scrollIds.value.includes(beforeId)) return;
+    scrollIds.value.push(beforeId);
     getMoreGallery();
   }
 };
