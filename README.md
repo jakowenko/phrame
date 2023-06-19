@@ -42,6 +42,7 @@ If you would like to make a donation to support development, please use [GitHub 
 - [Stability AI](https://stability.ai)
 - [Dream](https://dream.ai)
 - [DeepAI](https://deepai.org)
+- [Leonardo.Ai](https://leonardo.ai)
 
 \* _Midjourney currently uses an unofficial third party [package](https://github.com/erictik/midjourney-client). Use this integration at your own risk._
 
@@ -365,6 +366,53 @@ dream:
     # image model style (https://api.luan.tools/api/styles)
     style:
       - buliojourney v2
+```
+
+### `leonardoai`
+
+To configure Leonardo.Ai, obtain an [API key](https://leonardo.ai) and add it to your config like the following. All other default settings found bellow will also be applied. You can overwrite the settings by updating your `config.yml` file.
+
+```yaml
+# leonardoai settings (default: shown below)
+
+leonardoai:
+  # api key
+  key:
+
+  image:
+    # enable or disable image generation
+    enable: true
+    # number of seconds before the request times out and is aborted
+    timeout: 30
+    # indicate what you want to be removed from the image
+    negative_prompt:
+    # model id used for the image generation, if not provided uses sd_version to determine the version of stable diffusion to use
+    model_id: 6bef9f1b-29cb-40c7-b9df-32b51c1f67d3
+    # base version of stable diffusion to use if not using a custom model
+    sd_version: v2
+    # number of images to generate for each style
+    num_images: 1
+    # width of the image in pixels, must be between 32 and 1024 and be a multiple of 8
+    width: 512
+    # height of the image in pixels, must be between 32 and 1024 and be a multiple of 8
+    height: 512
+    # number of inference steps to use for the generation, must be between 30 and 60
+    num_inference_steps:
+    # how strongly the generation should reflect the prompt, must be between 1 and 20.
+    guidance_scale: 7
+    # scheduler to generate images with
+    scheduler:
+    # style to generate images with
+    preset_style: LEONARDO
+    # whether the generated images should tile on all axis
+    tiling:
+    # whether the generated images should show in the community feed
+    public:
+    # enable to use prompt magic
+    prompt_magic:
+    # used with summary to guide the image model towards a particular style
+    style:
+      - cinematic
 ```
 
 ### `time`
