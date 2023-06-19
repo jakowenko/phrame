@@ -91,7 +91,7 @@ class AI {
     try {
       for (let i = 0; i < this.styles.length; i++) {
         this.log.info(`processing: ${i + 1}/${this.styles.length} style(s)`);
-        this.style = this.styles[i];
+        this.style = this.styles[i] || 'no style';
         await this.createAttemptHandler('image', this.generateImage.bind(this))();
         await this.sleep(this.jitter());
       }
