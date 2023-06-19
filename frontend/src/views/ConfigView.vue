@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch, nextTick, onMounted, onBeforeMount, onBeforeUnmount } from 'vue';
+import { ref, watch, nextTick, onMounted, onBeforeMount, onBeforeUnmount, computed } from 'vue';
 
 import ace from 'ace-builds';
 import Button from 'primevue/button';
@@ -31,6 +31,11 @@ const services = ref<Array<{ name: string; status?: any; tooltip?: any; services
     services: [],
   },
 ]);
+
+const sortedServices = computed(() => {
+  if (services.value.length <= 2) return services.value;
+  return [services.value[0], ...services.value.slice(1).sort((a, b) => b.services.length - a.services.length)];
+});
 
 const save = async () => {
   try {
@@ -165,6 +170,7 @@ onMounted(async () => {
     <div ref="status" class="status-bar shadow-5">
       <ul class="service-status text-sm flex">
         <li
+          v-for="(service, index) in sortedServices"
           v-tooltip.right="
             service.tooltip === null
               ? ''
@@ -173,7 +179,6 @@ onMounted(async () => {
               : service.tooltip
           "
           class="flex align-items-center mr-2"
-          v-for="(service, index) in services"
           :key="service.name"
           :class="{ 'no-image': index > 0 && !service.services.includes('image') }"
         >

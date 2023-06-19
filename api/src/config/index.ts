@@ -5,6 +5,8 @@ import _ from 'lodash';
 import SYSTEM from './system';
 import DEFAULT from './default';
 
+const supportedAIs = ['openai', 'stabilityai', 'deepai', 'dream', 'midjourney', 'leonardoai'];
+
 const objectKeysToCase = (
   casing: 'toLowerCase' | 'toUpperCase',
   input: { [name: string]: any }
@@ -41,7 +43,7 @@ let loaded: any;
 let userOptions: any;
 
 const config = Object.assign(
-  (options = {}) => {
+  () => {
     return objectKeysToCase('toUpperCase', config.lowercase());
   },
   {
@@ -57,19 +59,21 @@ const config = Object.assign(
       loaded = _.mergeWith(loaded, { SYSTEM: SYSTEM });
       loaded = objectKeysToCase('toLowerCase', loaded);
 
-      if (!_.get(userOptions, 'stabilityai.key')) _.unset(loaded, 'stabilityai');
-      if (!_.get(userOptions, 'openai.key')) _.unset(loaded, 'openai');
+      supportedAIs.forEach((supportedAI) => {
+        if (!_.get(userOptions, `${supportedAI}.${supportedAI === 'midjourney' ? 'token' : 'key'}`))
+          _.unset(loaded, supportedAI);
+      });
 
       return loaded;
     },
     ai: () => {
-      const supportedAIs = ['openai', 'stabilityai'];
       const configuredAIs: any[] = [];
 
       supportedAIs.forEach((supportedAI) => {
         const base: { ai: string; services: string[] } = { ai: supportedAI, services: [] };
-        if (_.get(loaded, `${supportedAI}.image`)) base.services.push('image');
-        if (_.get(loaded, `${supportedAI}.key`)) configuredAIs.push(base);
+        if (_.get(loaded, `${supportedAI}.image.enable`)) base.services.push('image');
+        if (_.get(loaded, `${supportedAI}.key`) || _.get(loaded, `${supportedAI}.token`))
+          configuredAIs.push(base);
       });
 
       return configuredAIs;
