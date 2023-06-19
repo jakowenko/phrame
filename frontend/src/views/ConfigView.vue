@@ -32,27 +32,19 @@ const services = ref<Array<{ name: string; status?: any; tooltip?: any; services
   },
 ]);
 
-const postRestart = () => {
-  waitForRestart.value = false;
-  loading.value = false;
-  emitter.emit('toast', { severity: 'success', message: 'Restart complete' });
-};
-
 const save = async () => {
   try {
-    if (loading.value) return;
+    if (waitForRestart.value) return;
     services.value.forEach((service) => {
       service.status = null;
       service.tooltip = null;
     });
     await ApiService.patch('config', { code });
-    loading.value = true;
     waitForRestart.value = true;
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       if (!socket.state.connected) {
         emitter.emit('error', Error('Restart Error: check container logs'));
-        loading.value = false;
         waitForRestart.value = false;
       }
     }, 10000);
@@ -68,14 +60,25 @@ const saveListener = (event: KeyboardEvent) => {
   }
 };
 
+const checkForErrors = async () => {
+  try {
+    const {
+      data: { errors },
+    } = await ApiService.get('config?format=yaml');
+    if (errors) for (const error of errors) emitter.emit('toast', { severity: 'warn', message: error });
+  } catch (error) {
+    emitter.emit('error', error);
+  }
+};
+
 const getYaml = async () => {
   try {
     const {
-      data: { config, errors },
+      data: { config },
     } = await ApiService.get('config?format=yaml');
     loading.value = false;
     code = config;
-    if (errors) for (const error of errors) emitter.emit('toast', { severity: 'warn', message: error });
+    await checkForErrors();
     await nextTick();
     editor.session.setValue(config);
     editor.session.setTabSize(2);
@@ -124,13 +127,19 @@ const editorInit = (obj: any) => {
   editor = obj;
 };
 
+const postRestart = () => {
+  waitForRestart.value = false;
+  checkServices();
+  emitter.emit('toast', { severity: 'success', message: 'Restart complete' });
+};
+
 watch(
   () => socket.state.connected,
   (value) => {
     if (!value) return;
     if (waitForRestart.value) {
       postRestart();
-      getYaml();
+      checkForErrors();
     }
   },
 );
@@ -199,13 +208,15 @@ onMounted(async () => {
               v-tooltip.left="'Refresh Page'"
             />
             <br />
-            <Button
-              icon="fas fa-save"
-              class="p-button p-button-sm p-button-success"
-              @click="save"
-              :disabled="loading"
-              v-tooltip.left="'Save Config and Restart'"
-            />
+            <div class="save-btn-wrapper border-round">
+              <Button
+                icon="fas fa-save"
+                class="p-button p-button-sm p-button-success"
+                @click="save"
+                :disabled="waitForRestart"
+                v-tooltip.left="'Save Config and Restart'"
+              />
+            </div>
           </div>
           <VAceEditor
             v-model:value="code"
@@ -285,5 +296,9 @@ ul.service-status {
 
 :deep(.ace_editor) .ace_mobile-menu {
   display: none !important;
+}
+
+.save-btn-wrapper {
+  background: var(--surface-a);
 }
 </style>
