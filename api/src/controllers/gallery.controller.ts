@@ -1,9 +1,11 @@
 import express from 'express';
 import sharp from 'sharp';
+import fs from 'fs';
 
 import { NOT_FOUND } from '../constants/http-status';
 import config from '../config';
 import { Summary } from '@prisma/client';
+import { bytesToSize } from '../util/size.util';
 
 const router = express.Router();
 const {
@@ -40,6 +42,18 @@ const calculateAspectRatio = async (filename: string): Promise<number> => {
   } catch (error) {
     return 1;
   }
+};
+
+const getFolderSize = async () => {
+  let totalSize = 0;
+  const files = fs.readdirSync(STORAGE.IMAGE.PATH);
+
+  for (let file of files) {
+    const { size } = fs.statSync(`${STORAGE.IMAGE.PATH}/${file}`);
+    totalSize += size;
+  }
+
+  return bytesToSize(totalSize);
 };
 
 router.get('/filters', async (req, res) => {
@@ -228,7 +242,12 @@ router.get('/', async (req, res) => {
 
   res.send({
     hasMore,
-    total: { summaries: totalSummaries, images: totalImages, favorites: totalFavorites },
+    total: {
+      summaries: totalSummaries,
+      images: totalImages,
+      favorites: totalFavorites,
+      size: await getFolderSize(),
+    },
     galleries: summaries,
   });
 });

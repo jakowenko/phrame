@@ -65,10 +65,11 @@ const scrollIds = ref<number[]>([]);
 const galleries = ref<Gallery[]>([]);
 const oldestGalleryId = ref(0);
 const favoritesDefault = ref(false);
-const total = ref<{ summaries: number | null; images: number | null; favorites: number | null }>({
+const total = ref<{ summaries: number | null; images: number | null; favorites: number | null; size: string | null }>({
   summaries: null,
   images: null,
   favorites: null,
+  size: null,
 });
 const filters = ref<{ favorites: FilterValue[]; ais: FilterValue[]; styles: FilterValue[]; loading: boolean }>({
   favorites: [
@@ -620,7 +621,12 @@ if (window.matchMedia('(pointer: coarse)').matches) {
           />
           <Chip
             icon="pi fas fa-images"
-            :label="(total.images === null ? '-' : total.images.toString()) + ' ' + inflect('Image', total.images || 0)"
+            :label="
+              (total.images === null ? '-' : total.images.toString()) +
+              ' ' +
+              inflect('Image', total.images || 0) +
+              (total.size ? ' (' + total.size + ')' : '')
+            "
             class="text-sm mr-2 align-self-center"
           />
           <Chip
