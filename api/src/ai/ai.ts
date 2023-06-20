@@ -1,9 +1,16 @@
 import { Logger } from 'winston';
+import _ from 'lodash';
+import sharp from 'sharp';
 
 import Log from '../util/logger.util';
 import sleep from '../util/sleep.util';
 import { emitter } from '../util/emitter.util';
 import { downloadImageFromURL, saveImageFromBuffer } from './util';
+import config from '../config';
+
+const {
+  SYSTEM: { STORAGE },
+} = config();
 
 export type Random = { prompt?: string; context?: string };
 export type LogError = { type: string; error: any };
@@ -125,8 +132,17 @@ class AI {
                 style: this.style,
               })
             : { filename: false };
-        if (typeof filename === 'string')
+        if (typeof filename === 'string') {
+          if (_.get(config.lowercase(), `${this.name}.image.trim`)) {
+            let buffer = await sharp(`${STORAGE.IMAGE.PATH}/${filename}`)
+              .trim()
+              .rotate(180)
+              .toBuffer();
+            buffer = await sharp(buffer).trim().rotate(180).toBuffer();
+            await sharp(buffer).toFile(`${STORAGE.IMAGE.PATH}/${filename}`);
+          }
           this.saved.push({ ai: this.name, filename, style: this.style });
+        }
       })();
     }
 

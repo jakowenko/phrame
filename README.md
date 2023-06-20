@@ -236,6 +236,8 @@ openai:
     random: Provide a random short description to describe a picture, painting, or artwork. It should be no more than two or three sentences and be something that DALL·E can use. Make sure it doesn't contain words that would be rejected by your safety system.
 
   image:
+    # trim letterbox and pillarbox images
+    trim: false
     # size of the generated images: 256x256, 512x512, or 1024x1024
     size: 512x512
     # number of images to generate for each style
@@ -274,6 +276,8 @@ midjourney:
   image:
     # enable or disable image generation
     enable: true
+    # trim letterbox and pillarbox images
+    trim: false
     # options added to a prompt that change how an image generates (https://docs.midjourney.com/docs/parameter-list)
     parameters: --chaos 80 --no text
     # upscale options (false, random, 1,2,3,4)
@@ -295,6 +299,8 @@ stabilityai:
   key: sk-XXXXXXX
 
   image:
+    # trim letterbox and pillarbox images
+    trim: false
     # number of seconds before the request times out and is aborted
     timeout: 30
     # engined used for image generation
@@ -328,6 +334,8 @@ deepai:
   image:
     # enable or disable image generation
     enable: true
+    # trim letterbox and pillarbox images
+    trim: false
     # number of seconds before the request times out and is aborted
     timeout: 30
     # 1 returns one image and 2 returns four images
@@ -357,6 +365,8 @@ dream:
   image:
     # enable or disable image generation
     enable: true
+    # trim letterbox and pillarbox images
+    trim: false
     # number of seconds before the request times out and is aborted
     timeout: 30
     # width of the image in pixels
@@ -382,6 +392,8 @@ leonardoai:
   image:
     # enable or disable image generation
     enable: true
+    # trim letterbox and pillarbox images
+    trim: false
     # number of seconds before the request times out and is aborted
     timeout: 30
     # indicate what you want to be removed from the image
