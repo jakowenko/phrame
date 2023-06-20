@@ -97,7 +97,7 @@ const getRandomSummary = async () => {
 
 const toggle = async (key: 'cron' | 'mic' | 'summary' | 'autogen') => {
   if (key === 'cron') {
-    socket.emit('state:patch', { cron: state.value.cron });
+    socket.emit('state:patch', { to: 'controller', cron: state.value.cron });
     toast.add({
       severity: 'info',
       detail: `Transcript Processing ${state.value.cron ? 'Enabled' : 'Disabled'}`,
@@ -105,7 +105,10 @@ const toggle = async (key: 'cron' | 'mic' | 'summary' | 'autogen') => {
     });
   }
   if (key === 'mic') {
-    socket.emit('state:patch', { to: 'frame', microphone: { enabled: state.value.microphone.enabled } });
+    socket.emit('state:patch', {
+      to: ['frame', 'controller'],
+      microphone: { enabled: state.value.microphone.enabled },
+    });
     toast.add({
       severity: 'info',
       detail: `Microphone ${state.value.microphone.enabled ? 'Enabled' : 'Disabled'}`,
@@ -114,7 +117,7 @@ const toggle = async (key: 'cron' | 'mic' | 'summary' | 'autogen') => {
   }
   if (key === 'summary') {
     socket.emit('state:patch', {
-      to: 'frame',
+      to: ['frame', 'controller'],
       image: { summary: state.value.image.summary },
     });
     toast.add({
