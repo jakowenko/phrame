@@ -225,7 +225,7 @@ To configure OpenAI, obtain an [API key](https://platform.openai.com) and add it
 
 openai:
   # api key
-  key: sk-XXXXXXX
+  key:
 
   summary:
     # model name (https://platform.openai.com/docs/models/overview)
@@ -298,7 +298,7 @@ To configure Stability AI, obtain an [API key](https://platform.stability.ai) an
 
 stabilityai:
   # api key
-  key: sk-XXXXXXX
+  key:
 
   image:
     # enable or disable image generation
@@ -315,11 +315,11 @@ stabilityai:
     height: 512
     # how strictly the diffusion process adheres to the prompt text (higher values keep your image closer to your prompt)
     cfg_scale: 7
-    # number of images to generate
+    # number of images to generate for each style
     samples: 1
     # number of diffusion steps to run
     steps: 50
-    # style preset to guide the image model towards a particular style
+    # image model style (https://platform.stability.ai/rest-api#tag/v1generation/operation/textToImage)
     style:
       - cinematic
 ```
