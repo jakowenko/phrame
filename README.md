@@ -231,9 +231,9 @@ openai:
     # model name (https://platform.openai.com/docs/models/overview)
     model: gpt-3.5-turbo
     # prompt used to generate a summary from transcripts
-    prompt: You are a helpful assistant that will take a string of random conversations and pull out a few keywords and topics that were talked about. You will then turn this into a short description to describe a picture, painting, or artwork. It should be no more than two or three sentences and be something that DALL·E can use. Make sure it doesn't contain words that would be rejected by your safety system.
+    prompt: You will be given a string of random conversations and need to pull out a few keywords and topics that were talked about. You will then turn this into a short description to describe a picture. It should be no more than two or three sentences.
     # prompt used to generate a random summary
-    random: Provide a random short description to describe a picture, painting, or artwork. It should be no more than two or three sentences and be something that DALL·E can use. Make sure it doesn't contain words that would be rejected by your safety system.
+    random: Provide a random short description to describe a picture. It should be no more than two or three sentences.
 
   image:
     # enable or disable image generation
