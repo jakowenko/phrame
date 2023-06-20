@@ -202,6 +202,11 @@ body {
   margin: 0 auto;
 }
 
+.p-button:focus,
+.p-togglebutton.p-button:not(.p-disabled).p-focus {
+  box-shadow: none;
+}
+
 .p-dialog {
   .p-dialog-footer .p-button-icon {
     display: none;
