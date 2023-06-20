@@ -118,6 +118,7 @@ router.get('/', async (req, res) => {
       select: {
         id: true,
         imageId: true,
+        createdAt: true,
       },
       where: {
         AND: [
@@ -137,6 +138,7 @@ router.get('/', async (req, res) => {
       select: {
         id: true,
         imageId: true,
+        createdAt: true,
       },
       where: {
         AND: [{ key: 'ai', value: { in: aiFilter } }, { imageId: { in: favoriteIds } }],
