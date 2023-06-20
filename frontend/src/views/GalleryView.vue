@@ -301,6 +301,7 @@ const closeModal = () => {
 };
 
 const modalImage = async (direction: 'next' | 'prev') => {
+  if (!modal.value.src) return;
   if (allImageIds.value.length !== total.value.images) {
     if (direction === 'next' && modal.value.image.id === _.last(allImageIds.value)) {
       modal.value.src = '';
