@@ -370,6 +370,10 @@ const favoriteImage = async (id: number, value: boolean) => {
   emitter.emit('toggle:favorite', { id, favorite: value });
 };
 
+const openImage = () => {
+  window.open(modal.value.src);
+};
+
 const modalNavigation = (event: KeyboardEvent) => {
   if (!modal.value.show) return;
   const { key } = event;
@@ -538,6 +542,8 @@ if (window.matchMedia('(pointer: coarse)').matches) {
                 :style="modal.image.favorite ? 'color: var(--yellow-400)' : ''"
                 @click="favoriteImage(modal.image.id, !modal.image.favorite)"
               ></i>
+              <i class="fas fa-arrow-up-right-from-square" @click="openImage"></i>
+
               <i class="fas fa-trash-can" @click="deleteImage(modal.image.id)"></i>
             </div>
             <img ref="swipe" :src="modal.src" class="border-round" />
