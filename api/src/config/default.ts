@@ -26,6 +26,7 @@ export default {
         "Provide a random short description to describe a picture, painting, or artwork. It should be no more than two or three sentences and be something that DALL·E can use. Make sure it doesn't contain words that would be rejected by your safety system.",
     },
     image: {
+      enable: true,
       trim: false,
       size: '512x512',
       n: 1,
@@ -34,6 +35,7 @@ export default {
   },
   stabilityai: {
     image: {
+      enable: true,
       trim: false,
       timeout: 30,
       engine_id: 'stable-diffusion-512-v2-1',

@@ -236,6 +236,8 @@ openai:
     random: Provide a random short description to describe a picture, painting, or artwork. It should be no more than two or three sentences and be something that DALL·E can use. Make sure it doesn't contain words that would be rejected by your safety system.
 
   image:
+    # enable or disable image generation
+    enable: true
     # trim letterbox and pillarbox images
     trim: false
     # size of the generated images: 256x256, 512x512, or 1024x1024
@@ -299,6 +301,8 @@ stabilityai:
   key: sk-XXXXXXX
 
   image:
+    # enable or disable image generation
+    enable: true
     # trim letterbox and pillarbox images
     trim: false
     # number of seconds before the request times out and is aborted
