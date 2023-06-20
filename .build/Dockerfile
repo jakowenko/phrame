@@ -26,7 +26,9 @@ RUN npm install
 WORKDIR /app/api
 COPY /api/server.ts .
 COPY /api/src ./src
+COPY /api/prisma ./prisma
 
+RUN npx prisma generate
 RUN npx tsc
 RUN mv node_modules /tmp/node_modules && mv dist /tmp/dist-api && rm -r * && mv /tmp/dist-api/* . && mv /tmp/node_modules node_modules
 COPY /api/prisma .
