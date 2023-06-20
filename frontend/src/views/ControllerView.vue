@@ -370,72 +370,80 @@ watch(
         <div class="grid mt-0 pb-1">
           <div class="col-12 md:col-6">
             <div class="grid mt-0 flex h-full">
-              <div
-                class="col-2"
-                v-tooltip.left="state.microphone.enabled === null ? 'Click for instructions' : ''"
-                @click="noMicClick = state.microphone.enabled === null ? true : false"
-              >
-                <ToggleButton
-                  v-model="state.microphone.enabled"
-                  onLabel=""
-                  offLabel=""
-                  onIcon="fas fa-microphone"
-                  offIcon="fas fa-microphone-slash"
-                  :disabled="state.microphone.enabled === null"
-                  @click="toggle('mic')"
-                  class="p-button-sm w-full h-full"
-                  v-tooltip.right="'Toggle Microphone'"
-                />
+              <div class="col-4 flex">
+                <div
+                  v-tooltip.left="state.microphone.enabled === null ? 'Click for instructions' : ''"
+                  @click="noMicClick = state.microphone.enabled === null ? true : false"
+                  class="w-full"
+                >
+                  <ToggleButton
+                    v-model="state.microphone.enabled"
+                    onLabel=""
+                    offLabel=""
+                    onIcon="fas fa-microphone"
+                    offIcon="fas fa-microphone-slash"
+                    :disabled="state.microphone.enabled === null"
+                    @click="toggle('mic')"
+                    class="p-button-sm w-full h-full button-left-border"
+                    v-tooltip.right="'Toggle Microphone'"
+                  />
+                </div>
+                <div class="w-full">
+                  <ToggleButton
+                    v-if="state.image"
+                    v-model="state.image.summary"
+                    onLabel=""
+                    offLabel=""
+                    onIcon="fas fa-rectangle-list"
+                    offIcon="fas fa-rectangle-list"
+                    @click="toggle('summary')"
+                    class="p-button-sm w-full h-full button-right-border"
+                    v-tooltip.bottom="'Toggle Summary Visibility'"
+                  />
+                </div>
               </div>
-              <div class="col-2">
+              <div class="col-4 flex">
                 <ToggleButton
                   v-model="state.cron"
                   onLabel=""
                   offLabel=""
-                  onIcon="fas fa-clock"
-                  offIcon="fas fa-clock"
+                  onIcon="fas fa-image"
+                  offIcon="fas fa-image"
                   @click="toggle('cron')"
-                  class="p-button-sm w-full h-full"
+                  class="p-button-sm w-full h-full button-left-border"
                   v-tooltip.bottom="'Toggle Transcript Processing'"
                 />
-              </div>
-              <div class="col-2">
                 <ToggleButton
-                  v-if="state.image"
-                  v-model="state.image.summary"
+                  v-model="state.autogen"
                   onLabel=""
                   offLabel=""
-                  onIcon="fas fa-rectangle-list"
-                  offIcon="fas fa-rectangle-list"
-                  @click="toggle('summary')"
-                  class="p-button-sm w-full h-full"
-                  v-tooltip.bottom="'Toggle Summary Visibility'"
+                  onIcon="fas fa-wand-magic-sparkles"
+                  offIcon="fas fa-wand-magic-sparkles"
+                  @click="toggle('autogen')"
+                  class="p-button-sm w-full h-full button-right-border"
+                  v-tooltip.bottom="'Toggle Autogen Processing'"
                 />
               </div>
-              <div class="col-2">
+              <div class="col-4 flex">
                 <Button
                   icon="fas fa-backward"
                   @click="imageControl('prev')"
                   size="small"
-                  class="w-full h-full"
+                  class="w-full h-full button-left-border"
                   v-tooltip.bottom="'Previous Image'"
                 />
-              </div>
-              <div class="col-2">
                 <Button
                   :icon="state.image.cycle ? 'fas fa-pause' : 'fas fa-play'"
                   @click="imageControl('toggle')"
                   size="small"
-                  class="w-full h-full"
+                  class="w-full h-full button-center-border"
                   v-tooltip.bottom="'Toggle Image Cycling'"
                 />
-              </div>
-              <div class="col-2">
                 <Button
                   icon="fas fa-forward"
                   @click="imageControl('next')"
                   size="small"
-                  class="w-full h-full"
+                  class="w-full h-full button-right-border"
                   v-tooltip.bottom="'Next Image'"
                 />
               </div>
@@ -582,6 +590,18 @@ watch(
 }
 .volume-meter.green {
   background: var(--green-400);
+}
+
+.button-left-border {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.button-center-border {
+  border-radius: 0;
+}
+.button-right-border {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 @media only screen and (max-width: 576px) {
