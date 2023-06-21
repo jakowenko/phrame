@@ -6,6 +6,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import eslintPlugin from 'vite-plugin-eslint';
 import svgLoader from 'vite-svg-loader';
+import monacoEditorPlugin from 'vite-plugin-monaco-editor';
 
 let svgPrefixCounter = 0;
 
@@ -14,6 +15,9 @@ export default defineConfig({
   plugins: [
     vue(),
     eslintPlugin(),
+    monacoEditorPlugin({
+      customWorkers: [{ label: 'yaml', entry: 'monaco-yaml/yaml.worker' }],
+    }),
     svgLoader({
       svgoConfig: {
         plugins: [
