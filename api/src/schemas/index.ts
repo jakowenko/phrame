@@ -33,7 +33,7 @@ const validateSizeForOtherEngines = (value: {
   return !(engine_id.includes('768') === false && (size < 262144 || size > 1048576));
 };
 
-const schema = z
+export const schema = z
   .object({
     telemetry: z.boolean(),
     logs: z

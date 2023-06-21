@@ -1,24 +1,23 @@
 <script lang="ts" setup>
 import { ref, watch, nextTick, onMounted, onBeforeMount, onBeforeUnmount, computed } from 'vue';
 
-import ace from 'ace-builds';
+import * as monaco from 'monaco-editor';
+import { setDiagnosticsOptions } from 'monaco-yaml';
 import Button from 'primevue/button';
-import { VAceEditor } from 'vue3-ace-editor';
 
 import socket from '@/utils/socket';
 import { ApiService } from '@/services/api.service';
 import sleep from '@/utils/sleep';
 import emitter from '@/services/emitter.service';
 import { aiToTitleCase } from '@/utils/functions';
-
-ace.config.set('basePath', 'js/ace');
+import theme from '@/assets/monaco-themes/phrame.json';
+import constants from '@/utils/constants';
 
 const props = defineProps<{
   toolbarHeight: number;
 }>();
 const loading = ref(true);
-let editor: { [name: string]: any };
-let code: string;
+let editor: monaco.editor.IStandaloneCodeEditor;
 const waitForRestart = ref(false);
 let timeout: ReturnType<typeof setTimeout>;
 const status = ref<HTMLElement | null>(null);
@@ -44,7 +43,7 @@ const save = async () => {
       service.status = null;
       service.tooltip = null;
     });
-    await ApiService.patch('config', { code });
+    await ApiService.patch('config', { code: editor.getValue() });
     waitForRestart.value = true;
     clearTimeout(timeout);
     timeout = setTimeout(() => {
@@ -82,11 +81,41 @@ const getYaml = async () => {
       data: { config },
     } = await ApiService.get('config?format=yaml');
     loading.value = false;
-    code = config;
     await checkForErrors();
     await nextTick();
-    editor.session.setValue(config);
-    editor.session.setTabSize(2);
+    const element = document.getElementById('editor');
+    if (element) {
+      const modelUri = monaco.Uri.parse('a://b/api/config/schema.json');
+      setDiagnosticsOptions({
+        enableSchemaRequest: true,
+        validate: false,
+        schemas: [
+          {
+            uri: `${constants().api}/config/schema.json`,
+            fileMatch: [String(modelUri)],
+          },
+        ],
+      });
+      const model =
+        monaco.editor.getModels().length > 0
+          ? monaco.editor.getModel(modelUri)
+          : monaco.editor.createModel(config, 'yaml', modelUri);
+
+      monaco.editor.defineTheme('phrame', theme as monaco.editor.IStandaloneThemeData);
+      editor = monaco.editor.create(element, {
+        value: config,
+        language: 'yaml',
+        model,
+        theme: 'phrame',
+        automaticLayout: true,
+        scrollBeyondLastLine: false,
+        wordWrap: 'on',
+        minimap: { enabled: false },
+        overviewRulerBorder: false,
+        scrollbar: { verticalScrollbarSize: 8 },
+        fixedOverflowWidgets: true,
+      });
+    }
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     await checkServices();
   } catch (error) {
@@ -126,10 +155,6 @@ const checkServices = async () => {
 
 const reload = () => {
   window.location.reload();
-};
-
-const editorInit = (obj: any) => {
-  editor = obj;
 };
 
 const postRestart = () => {
@@ -203,7 +228,7 @@ onMounted(async () => {
         <i class="pi pi-spin pi-spinner align-self-center" style="font-size: 2rem"></i>
       </div>
       <div v-else class="h-full">
-        <div class="editor h-full">
+        <div class="editor-wrapper h-full">
           <div class="buttons mt-2 mr-2">
             <Button
               icon="fas fa-rotate-right"
@@ -223,15 +248,7 @@ onMounted(async () => {
               />
             </div>
           </div>
-          <VAceEditor
-            v-model:value="code"
-            lang="yaml"
-            :wrap="true"
-            :printMargin="false"
-            theme="dracula"
-            style="height: 100%"
-            @init="editorInit"
-          />
+          <div id="editor"></div>
         </div>
       </div>
     </div>
@@ -286,11 +303,11 @@ ul.service-status {
     }
   }
 }
-.editor {
+.editor-wrapper {
   margin-left: -1rem;
   margin-right: -1rem;
   padding-top: 0.5rem;
-  background: #282a36;
+  background: #24252e;
   .buttons {
     position: absolute;
     top: 0;
@@ -299,8 +316,23 @@ ul.service-status {
   }
 }
 
-:deep(.ace_editor) .ace_mobile-menu {
-  display: none !important;
+#editor {
+  height: 100%;
+  :deep(.monaco-editor .scroll-decoration) {
+    box-shadow: none;
+  }
+  :deep(textarea) {
+    font-size: 16px !important;
+  }
+  :deep(.iPadShowKeyboard) {
+    display: none;
+  }
+  :deep(.slider) {
+    border-radius: 4px;
+  }
+  :deep(.inputarea.monaco-mouse-cursor-text) {
+    opacity: 0;
+  }
 }
 
 .save-btn-wrapper {

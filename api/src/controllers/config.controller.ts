@@ -1,10 +1,11 @@
 import fs from 'fs';
 import express from 'express';
 import yaml from 'js-yaml';
+import { zodToJsonSchema } from 'zod-to-json-schema';
 
 import ai from '../ai';
 import config from '../config';
-import validate from '../schemas';
+import validate, { schema } from '../schemas';
 import { BAD_REQUEST } from '../constants/http-status';
 
 const router = express.Router();
@@ -21,6 +22,10 @@ router.get('/', async (req, res) => {
   else output = config.lowercase();
   const errors = validate(true);
   res.send({ config: output, errors });
+});
+
+router.get('/schema.json', async (req, res) => {
+  res.send(zodToJsonSchema(schema, 'phrame'));
 });
 
 router.patch('/', async (req, res) => {
