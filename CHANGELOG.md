@@ -1,3 +1,39 @@
+## [1.1.0](https://github.com/jakowenko/phrame/compare/v1.0.0...v1.1.0) (2023-06-22)
+
+
+### Features
+
+* add support for deepai ([d6b3f55](https://github.com/jakowenko/phrame/commit/d6b3f55200d02c5c520708f03157f8d9b56db0a1))
+* add support for dream ([b6a64bf](https://github.com/jakowenko/phrame/commit/b6a64bf742cefb7728cb785dd4bc4576d9ed9098))
+* add support for leonardoai ([c57b1d5](https://github.com/jakowenko/phrame/commit/c57b1d5f254fd66e9ce7a060789fd253f2a81dbf))
+* add support for midjourney ([8229ad2](https://github.com/jakowenko/phrame/commit/8229ad27dd3c7820058a06598a37720bfbfc1fb3))
+* auto generate images ([46d41b2](https://github.com/jakowenko/phrame/commit/46d41b27256b64273c5fddb1880b48cda4b489b2))
+* auto trim images ([851d7cc](https://github.com/jakowenko/phrame/commit/851d7ccdfa0a2c3313046a81a6404d2f402d7aeb))
+* config ai image status ([74a4ef1](https://github.com/jakowenko/phrame/commit/74a4ef1c61a30c305dd1a6bfe3dba51524a17458))
+* gallery shows total image file size ([385f276](https://github.com/jakowenko/phrame/commit/385f2763a56b8611db347a1e235e6a89dc5f2839))
+* gallery swipe on mobile ([a4e0bc1](https://github.com/jakowenko/phrame/commit/a4e0bc15a7d80744c4f722ac8aa8ab9aa0256b01))
+* open gallery image in new window ([8e9c16e](https://github.com/jakowenko/phrame/commit/8e9c16ea42853b7a04a20a537df18b95af5b8585))
+* pass optional context for random summary generation ([bb7899f](https://github.com/jakowenko/phrame/commit/bb7899fc39ed11bb14542802f908995c138cd2e5))
+* preload next gallery image ([a3520cf](https://github.com/jakowenko/phrame/commit/a3520cf4e6317ad5133fcd29c54b12fb88f887d2))
+
+
+### Bug Fixes
+
+* ensure summary is defined before creating ([5c569f4](https://github.com/jakowenko/phrame/commit/5c569f4f0dda6f8e4c622d86d5924b11cc5ec971))
+* get gallery would fail with a lot of images ([a9abb64](https://github.com/jakowenko/phrame/commit/a9abb64f206ef0e0934da73c35137d787c5c2bfe))
+* prevent change of modal image if src isn’t set ([7111e90](https://github.com/jakowenko/phrame/commit/7111e902f5f2f320d95fb2253b95aee4b6c506c1))
+* prevent image cycle when disabled on load ([a96c327](https://github.com/jakowenko/phrame/commit/a96c3272d9b8b4e58289ea31dda16f3e384298f0))
+* reset scroll ids when gallery is loaded ([24a05e6](https://github.com/jakowenko/phrame/commit/24a05e6419dfdddd35720f580600accaa5fafdc9))
+* update total after favorite ([d041335](https://github.com/jakowenko/phrame/commit/d0413358422f79e02d95e0041f1d610dbcce56c7))
+
+
+### Build
+
+* bump packages ([e0094c8](https://github.com/jakowenko/phrame/commit/e0094c89d4a74501e2d2a8bac9f67bd866735f91))
+* drop armv7 support ([e83871f](https://github.com/jakowenko/phrame/commit/e83871f130c1bc4c05afa5d4647398e25f9edf5a))
+* exclude inline source map files ([128cd4a](https://github.com/jakowenko/phrame/commit/128cd4ac48278e0d84fdc5fe30a14a16753c4d0a))
+* generate prisma client during build ([b66bc55](https://github.com/jakowenko/phrame/commit/b66bc55b1287ac14eac47ebbce7647801f91ac60))
+
 ## [1.1.0-beta.1](https://github.com/jakowenko/phrame/compare/v1.0.0...v1.1.0-beta.1) (2023-06-22)
 
 
