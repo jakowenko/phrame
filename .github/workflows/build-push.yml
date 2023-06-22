@@ -30,7 +30,7 @@ jobs:
       - name: Set ENV to latest
         if: ${{ github.event.release.target_commitish == 'master' || (github.event_name == 'workflow_dispatch' && github.ref_name == 'master') }}
         run: |
-          echo "ARCH=linux/amd64,linux/arm/v7,linux/arm64" >> $GITHUB_ENV
+          echo "ARCH=linux/amd64,linux/arm64" >> $GITHUB_ENV
           echo "TAGS=jakowenko/phrame:latest,jakowenko/phrame:${{steps.version.outputs.prop}}" >> $GITHUB_ENV
       - name: Version with SHA-7
         run: |

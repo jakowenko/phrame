@@ -33,7 +33,6 @@ If you would like to make a donation to support development, please use [GitHub 
 
 - amd64
 - arm64
-- arm/v7
 
 ## Supported AIs
 
