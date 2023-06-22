@@ -56,7 +56,7 @@ export default defineConfig({
     host: true,
   },
   build: {
-    sourcemap: 'inline',
+    sourcemap: true,
   },
   css: {
     devSourcemap: true,
